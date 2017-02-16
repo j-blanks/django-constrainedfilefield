@@ -1,6 +1,6 @@
 [![Python](https://img.shields.io/badge/Python-3.5-blue.svg?style=flat-square)](/)
 [![Django](https://img.shields.io/badge/Django-1.10-blue.svg?style=flat-square)](/)
-[![License](https://img.shields.io/badge/License-BSD3Clause-blue.svg?style=flat-square)](/LICENSE)
+[![License](https://img.shields.io/badge/License-BSD--3--Clause-blue.svg?style=flat-square)](/LICENSE)
 
 # ConstrainedFileField for Django
 
