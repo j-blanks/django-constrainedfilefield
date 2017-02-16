@@ -1,105 +1,96 @@
-from django.db import models
 from django import forms
+from django.db import models
 from django.template.defaultfilters import filesizeformat
 from django.utils.translation import ugettext as _
 
-import magic
 
+class ConstrainedFileField(models.FileField):
+    """
+    A FielField with additional constraints. Namely, the file size and type can be restricted. If
+    using the types, the magic library is required. Setting neither a file size nor type behaves
+    like a regular FileField.
 
-class ValidatedFileField(models.FileField):
+    Parameters
+    ----------
+    content_types : list of str
+        List containing allowed content_types. Example: ['application/pdf', 'image/jpeg']
+    max_upload_size : int
+        Maximum file size allowed for upload
+            1 MB - 1048576 B - 1024**2 B - 2**20 B
+            2.5 MB - 2621440 B
+            5 MB - 5242880 B
+            10 MB - 10485760 B
+            20 MB - 20971520 B
+            33 MiB - 2**25 B
+            50 MB - 5242880 B
+            100 MB 104857600 B
+            250 MB - 214958080 B
+            500 MB - 429916160 B
+            1 GiB - 1024 MiB - 2**30 B
+    js_checker : bool
+        Add a javascript file size checker to the form field
+    mime_lookup_length : int
+
+    See Also
+    --------
+    Adapted from https://github.com/kaleidos/django-validated-file/blob/master/validatedfile/fields.py
+
+    """
+
+    description = "A FileField with constraints on size and/or type"
+
     def __init__(self, *args, **kwargs):
-        self.content_types = kwargs.pop("content_types", [])
         self.max_upload_size = kwargs.pop("max_upload_size", 0)
+        assert isinstance(self.max_upload_size, int) and self.max_upload_size >= 0
+        self.content_types = kwargs.pop("content_types", [])
         self.mime_lookup_length = kwargs.pop("mime_lookup_length", 4096)
-        super(ValidatedFileField, self).__init__(*args, **kwargs)
+        assert isinstance(self.mime_lookup_length, int) and self.mime_lookup_length >= 0
+        self.js_checker = kwargs.pop("js_checker", False)
+
+        super(ConstrainedFileField, self).__init__(*args, **kwargs)
+
+        if self.js_checker:
+            self.widget = forms.FileInput(
+                attrs={'onchange': 'validateFileSize(this, %d);' % (self.max_upload_size,)})
 
     def clean(self, *args, **kwargs):
-        data = super(ValidatedFileField, self).clean(*args, **kwargs)
-        file = data.file
+        data = super(ConstrainedFileField, self).clean(*args, **kwargs)
+
+        if self.max_upload_size and data.size > self.max_upload_size:
+            # Ensure no one bypasses the js checker
+            raise forms.ValidationError(
+                _('File size exceeds limit: %(current_size)s. Limit is %(max_size)s.') %
+                {'max_size': filesizeformat(self.max_upload_size),
+                 'current_size': filesizeformat(data.size)})
 
         if self.content_types:
+            import magic
+            file = data.file
             uploaded_content_type = getattr(file, 'content_type', '')
 
             mg = magic.Magic(mime=True)
-            content_type_magic = mg.from_buffer(
-                file.read(self.mime_lookup_length)
-            )
+            content_type_magic = mg.from_buffer(file.read(self.mime_lookup_length))
             file.seek(0)
 
-            # Prefere mime-type instead mime-type from http header
+            # Prefer mime-type from magic over mime-type from http header
             if uploaded_content_type != content_type_magic:
                 uploaded_content_type = content_type_magic
 
-            if not uploaded_content_type in self.content_types:
+            if uploaded_content_type not in self.content_types:
                 raise forms.ValidationError(
-                    _('Files of type %(type)s are not supported.') % {'type': content_type_magic}
-                )
-
-        if self.max_upload_size and hasattr(file, '_size'):
-            if file._size > self.max_upload_size:
-                raise forms.ValidationError(
-                    _('Files of size greater than %(max_size)s are not allowed. Your file is %(current_size)s') %
-                    {'max_size': filesizeformat(self.max_upload_size), 'current_size': filesizeformat(file._size)}
-                )
-
+                    _('Unsupported file type: %(type)s. Allowed types are %(allowed)s') %
+                    {'type': content_type_magic,
+                     'allowed': self.content_types})
         return data
 
-
-class FileQuota(object):
-
-    def __init__(self, max_usage=-1):
-        self.current_usage = 0
-        self.max_usage = max_usage
-
-    def update(self, items, attr_name):
-        self.current_usage = 0
-        for item in items:
-            the_file = getattr(item, attr_name, None)
-            if the_file:
-                try:
-                    self.current_usage += the_file.size
-                except AttributeError:
-                    pass  # Protect against the inconsistence of that the file
-                          # has been deleted in storage but still is in the field
-
-    def exceeds(self, size=0):
-        if self.max_usage >= 0:
-            return (self.current_usage + size > self.max_usage)
-        else:
-            return False
-
-    def near_limit(self, limit_threshold=0.8):
-        return (float(self.current_usage) / float(self.max_usage)) > limit_threshold
-
-
-class QuotaValidator(object):
-
-    def __init__(self, max_usage):
-        self.quota = FileQuota(max_usage)
-
-    def update_quota(self, items, attr_name):
-        self.quota.update(items, attr_name)
-
-    def __call__(self, file):
-        file_size = file.size
-        if self.quota.exceeds(file_size):
-            raise forms.ValidationError(
-                _('Please keep the total uploaded files under %(total_size)s. With this file, the total would be %(exceed_size)s.' %
-                {'total_size': filesizeformat(self.quota.max_usage), 'exceed_size': filesizeformat(self.quota.current_usage + file_size)})
-            )
-
-try:
-    from south.modelsinspector import add_introspection_rules
-    add_introspection_rules([
-        (
-            [ValidatedFileField],
-            [],
-            {
-                "content_types": ["content_types", {"default": []}],
-                "max_upload_size": ["max_upload_size", {"default": 0}],
-                "mime_lookup_length": ["mime_lookup_length", {"default": 4096}],
-            },
-        ),
-    ], ["^validatedfile\.fields\.ValidatedFileField"])
-except ImportError:
-    pass
+    def deconstruct(self):
+        name, path, args, kwargs = super(ConstrainedFileField, self).deconstruct()
+        if self.max_upload_size:
+            kwargs["max_upload_size"] = self.max_upload_size
+        if self.content_types:
+            kwargs["content_types"] = self.content_types
+        if self.mime_lookup_length:
+            kwargs["mime_lookup_length"] = self.mime_lookup_length
+        if self.js_checker:
+            kwargs["js_checker"] = self.mime_lookup_length
+        return name, path, args, kwargs
