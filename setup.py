@@ -1,38 +1,50 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from setuptools import setup, find_packages
+import os
+
+from setuptools import find_packages, setup
+
+from constrainedfilefield import __version__
+
+with open(os.path.join(os.path.dirname(__file__), 'README.md')) as readme:
+    README = readme.read()
+
+# allow setup.py to be run from any path
+os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
 
 setup(
-    name = 'django-validated-file',
-    version = ":versiontools:validatedfile:",
-    description = "This Django app adds a new field type, ValidatedFileField, that add the capability of checking the document size and types the user may send.",
-    long_description = "",
-    keywords = 'django, filefield, validation',
-    author = u'Andrés Moya Velázquez',
-    author_email = 'andres.moya@kaleidos.net',
-    url = 'https://github.com/kaleidos/django-validated-file',
-    license = 'BSD',
-    include_package_data = True,
-    package_data = {
+    name='django-constrainedfilefield',
+    version=__version__,
+    packages=find_packages(),
+    include_package_data=True,
+    license='BSD',
+    description="This Django app adds a new field type, ConstrainedFileField, that has the "
+                "capability of checking the document size and type.",
+    long_description=README,
+    author='Marc Bourqui',
+    author_email='https://github.com/mbourqui',
+    url='https://github.com/mbourqui/django-constrainedfilefield',
+    package_data={
         '': ['*.po', '*.mo'],
     },
-    packages = find_packages(),
-    install_requires=[
-        'distribute',
-        'python-magic >= 0.4.2',
-    ],
-    setup_requires = [
-        'versiontools >= 1.8',
-        'python-magic >= 0.4.2',
-    ],
-    classifiers = [
-        "Programming Language :: Python",
-        'Development Status :: 5 - Production/Stable',
+    install_requires=['python-magic >= 0.4.2', ],
+    setup_requires=['python-magic >= 0.4.2', ],
+    keywords='django filefield validation',
+    classifiers=[
+        'Development Status :: 3 - Alpha',
+        'Environment :: Web Environment',
         'Framework :: Django',
+        'Framework :: Django :: 1.10',
         'Intended Audience :: Developers',
         'License :: OSI Approved :: BSD License',
         'Operating System :: OS Independent',
+        'Programming Language :: Python',
+        'Programming Language :: Python :: 3',
+        'Programming Language :: Python :: 3.4',
+        'Programming Language :: Python :: 3.5',
         'Topic :: Internet :: WWW/HTTP',
+        'Topic :: Internet :: WWW/HTTP :: Dynamic Content',
+        'Topic :: Utilities',
     ]
 )
