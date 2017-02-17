@@ -15,7 +15,7 @@ class ConstrainedFileField(models.FileField):
     content_types : list of str
         List containing allowed content_types. Example: ['application/pdf', 'image/jpeg']
     max_upload_size : int
-        Maximum file size allowed for upload
+        Maximum file size allowed for upload, in bytes
             1 MB - 1048576 B - 1024**2 B - 2**20 B
             2.5 MB - 2621440 B
             5 MB - 5242880 B
@@ -33,7 +33,8 @@ class ConstrainedFileField(models.FileField):
 
     See Also
     --------
-    Adapted from https://github.com/kaleidos/django-validated-file/blob/master/validatedfile/fields.py
+    Based on https://github.com/kaleidos/django-validated-file/blob/master/validatedfile/fields.py
+    With inspiration from http://stackoverflow.com/a/9016664
 
     """
 
