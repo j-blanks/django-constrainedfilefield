@@ -25,8 +25,8 @@ INSTALLED_APPS = [
     'django.contrib.sites',
     'django.contrib.staticfiles',
 
-    'validatedfile',
-    'testing',
+    'constrainedfilefield',
+    'tests',
 ]
 
 LANGUAGE_CODE = 'en'
@@ -42,7 +42,7 @@ MIDDLEWARE_CLASSES = [
     'django.middleware.common.CommonMiddleware',
 ]
 
-ROOT_URLCONF = 'testing.urls'
+ROOT_URLCONF = 'tests.urls'
 
 SITE_ID = 1
 
