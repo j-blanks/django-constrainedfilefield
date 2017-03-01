@@ -1,20 +1,24 @@
 language: python
 python:
-  - "2.6"
   - "2.7"
+  - "3.3"
+  - "3.4"
+  - "3.5"
+env:
+  - DJANGO_VERSION=1.8.17
+  - DJANGO_VERSION=1.9.12
+  - DJANGO_VERSION=1.10.0
+  - DJANGO_VERSION=1.10.1
+  - DJANGO_VERSION=1.10.2
+  - DJANGO_VERSION=1.10.3
+  - DJANGO_VERSION=1.10.4
+  - DJANGO_VERSION=1.10.5
 install:
   - pip install django --use-mirrors
   - pip install python-magic --use-mirrors
   - pip install -e . --use-mirrors
   - pip install coveralls --use-mirrors
 script:
-  - coverage run --source=validatedfile runtests.py
-notifications:
-  email:
-    recipients:
-      - jespinog@gmail.com
-      - andres.moya@kaleidos.net
-    on_success: change
-    on_failure: change
+  - coverage run --source=constrainedfilefield runtests.py
 after_success:
   - coveralls
