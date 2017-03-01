@@ -19,6 +19,6 @@ install:
   - pip install -e . --use-mirrors
   - pip install coveralls --use-mirrors
 script:
-  - coverage run --source=constrainedfilefield
+  - coverage run --source=constrainedfilefield constrainedfilefield/tests/__main__.py
 after_success:
   - coveralls
