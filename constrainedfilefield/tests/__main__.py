@@ -3,6 +3,9 @@ import os
 
 os.environ['DJANGO_SETTINGS_MODULE'] = 'constrainedfilefield.tests.settings'
 
+from django.conf import settings
+settings.configure()
+
 if __name__ == "__main__":
     import sys
     from django import setup
