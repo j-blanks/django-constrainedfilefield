@@ -5,15 +5,16 @@ from django.core.files import File
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import TestCase
 
-from constrainedfilefield.tests.forms import TestModelForm, TestModelNoValidateForm, TestElementForm
+from constrainedfilefield.tests.forms import TestModelForm, TestModelNoValidateForm, \
+    TestElementForm
 from constrainedfilefield.tests.models import TestModel, TestContainer
 
 
 class ValidatedFileFieldTest(TestCase):
-    SAMPLE_FILES_PATH = 'testing/sample_files'
+    SAMPLE_FILES_PATH = 'tests/sample_files'
 
     def test_create_empty_instance(self):
-        instance = TestModel.objects.create()
+        TestModel.objects.create()
 
     def test_create_instance_with_file(self):
         instance = TestModel.objects.create(
