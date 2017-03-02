@@ -1,4 +1,6 @@
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
+
 __license__ = 'BSD'
 __author__ = 'Marc Bourqui'
 __version__ = '0.0.0-dev'

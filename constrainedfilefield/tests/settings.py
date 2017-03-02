@@ -1,17 +1,11 @@
 import os
 
-PROJECT_ROOT = os.path.dirname(os.path.realpath(__file__))
+BASE_DIR = os.path.dirname(os.path.realpath(__file__))
 
 DEBUG = True
 
 AUTHNET_LOGIN_ID = ''
 AUTHNET_TRANSACTION_KEY = ''
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3'
-    },
-}
 
 SECRET_KEY = 'm+qa*7_8t-=17zt_)9gi)4g%6w*v$xxkh6rwrys*bn9su+5%du'
 
@@ -26,14 +20,13 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'constrainedfilefield',
-    'constrainedfilefield.tests',
 ]
 
-LANGUAGE_CODE = 'en'
-
-LOGIN_URL = '/accounts/login/'
-
-MANAGERS = []
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3'
+    },
+}
 
 MIDDLEWARE_CLASSES = [
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -42,15 +35,19 @@ MIDDLEWARE_CLASSES = [
     'django.middleware.common.CommonMiddleware',
 ]
 
+LANGUAGE_CODE = 'en'
+
 ROOT_URLCONF = 'tests.urls'
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'
+
+LOGIN_URL = '/accounts/login/'
+
+MANAGERS = []
 
 SITE_ID = 1
 
-TEMPLATE_DIRS = [os.path.join(os.path.dirname(__file__), 'templates')]
-
 USE_I18N = True
 
-MEDIA_ROOT = os.path.join(PROJECT_ROOT, 'media')
-
-MEDIA_URL = '/media/'
-
+TEMPLATE_DIRS = [os.path.join(os.path.dirname(__file__), 'templates')]

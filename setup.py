@@ -16,20 +16,26 @@ os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
 setup(
     name='django-constrainedfilefield',
     version=__version__,
-    packages=find_packages(),
-    include_package_data=True,
+    author='Marc Bourqui',
+    author_email='https://github.com/mbourqui',
     license='BSD',
     description="This Django app adds a new field type, ConstrainedFileField, that has the "
                 "capability of checking the document size and type.",
     long_description=README,
-    author='Marc Bourqui',
-    author_email='https://github.com/mbourqui',
     url='https://github.com/mbourqui/django-constrainedfilefield',
+    packages=find_packages(),
+    include_package_data=True,
     package_data={
         '': ['*.po', '*.mo'],
     },
-    install_requires=['python-magic >= 0.4.2', ],
-    setup_requires=['python-magic >= 0.4.2', ],
+    install_requires=[
+        'Django>=1.8.0',
+        'python-magic >= 0.4.2',
+    ],
+    setup_requires=[
+        'Django>=1.8.0',
+        'python-magic >= 0.4.2',
+    ],
     keywords='django filefield validation',
     classifiers=[
         'Development Status :: 3 - Alpha',
@@ -40,6 +46,8 @@ setup(
         'License :: OSI Approved :: BSD License',
         'Operating System :: OS Independent',
         'Programming Language :: Python',
+        'Programming Language :: Python :: 2',
+        'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.4',
         'Programming Language :: Python :: 3.5',

@@ -10,8 +10,8 @@ from .forms import TestModelForm, TestModelNoValidateForm, TestElementForm
 from .models import TestModel, TestContainer
 
 
-class ValidatedFileFieldTest(TestCase):
-    SAMPLE_FILES_PATH = os.path.join(settings.PROJECT_ROOT, 'sample_files')
+class ConstrainedFileFieldTest(TestCase):
+    SAMPLE_FILES_PATH = os.path.join(settings.BASE_DIR, 'sample_files')
 
     def test_create_empty_instance(self):
         TestModel.objects.create()
