@@ -108,7 +108,7 @@ class ValidatedFileFieldTest(TestCase):
 
     def _get_sample_file(self, filename):
         path = os.path.join(self.SAMPLE_FILES_PATH, filename)
-        return open(path)
+        return open(path, mode='rb')
 
     def _check_file_url(self, filefield, filename):
         url = os.path.join(settings.MEDIA_URL, filefield.field.upload_to, filename)
