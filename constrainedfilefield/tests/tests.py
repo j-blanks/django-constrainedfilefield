@@ -47,7 +47,7 @@ class ValidatedFileFieldTest(TestCase):
         self.assertEqual(len(form.errors), 1)
         self.assertEqual(len(form.errors['the_file']), 1)
         self.assertEqual(form.errors['the_file'][0],
-                         u'Files of size greater than 10.0 KB are not allowed. Your file is 14.2 KB')
+                         u"File size exceeds limit: 14.2 KB. Limit is 10.0 KB.")
 
     def test_form_invalid_filetype(self):
         form = self._create_bound_test_model_form(form_class=TestModelForm,
@@ -58,7 +58,8 @@ class ValidatedFileFieldTest(TestCase):
         self.assertEqual(len(form.errors), 1)
         self.assertEqual(len(form.errors['the_file']), 1)
         self.assertEqual(form.errors['the_file'][0],
-                         u'Files of type application/pdf are not supported.')
+                         u"Unsupported file type: application/pdf. "
+                         u"Allowed types are ['image/png']")
 
     def test_form_invalid_filetype_and_size(self):
         form = self._create_bound_test_model_form(form_class=TestModelForm,
@@ -69,7 +70,7 @@ class ValidatedFileFieldTest(TestCase):
         self.assertEqual(len(form.errors), 1)
         self.assertEqual(len(form.errors['the_file']), 1)
         self.assertEqual(form.errors['the_file'][0],
-                         u'Files of type application/pdf are not supported.')
+                         u"File size exceeds limit: 14.9 KB. Limit is 10.0 KB.")
 
     def test_form_fake_filetype(self):
         form = self._create_bound_test_model_form(form_class=TestModelForm,
@@ -80,7 +81,8 @@ class ValidatedFileFieldTest(TestCase):
         self.assertEqual(len(form.errors), 1)
         self.assertEqual(len(form.errors['the_file']), 1)
         self.assertEqual(form.errors['the_file'][0],
-                         u'Files of type application/pdf are not supported.')
+                         u"Unsupported file type: application/pdf. "
+                         u"Allowed types are ['image/png']")
 
     def test_form_no_validate(self):
         form = self._create_bound_test_model_form(form_class=TestModelNoValidateForm,
