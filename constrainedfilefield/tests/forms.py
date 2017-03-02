@@ -1,15 +1,18 @@
 from django import forms
+
 from .models import TestModel, TestModelNoValidate, TestElement
 
 
 class TestModelForm(forms.ModelForm):
     class Meta:
         model = TestModel
+        fields = ['the_file']
 
 
 class TestModelNoValidateForm(forms.ModelForm):
     class Meta:
         model = TestModelNoValidate
+        fields = ['the_file']
 
 
 class TestElementForm(forms.ModelForm):
