@@ -26,7 +26,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'constrainedfilefield',
-    'tests',
+    'constrainedfilefield.tests',
 ]
 
 LANGUAGE_CODE = 'en'
