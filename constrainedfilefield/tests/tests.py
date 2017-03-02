@@ -5,13 +5,12 @@ from django.core.files import File
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import TestCase
 
+from .forms import TestModelForm, TestModelNoValidateForm, TestElementForm
 from .models import TestModel, TestContainer
-from .forms import TestModelForm, TestModelNoValidateForm, \
-    TestElementForm
 
 
 class ValidatedFileFieldTest(TestCase):
-    SAMPLE_FILES_PATH = 'tests/sample_files'
+    SAMPLE_FILES_PATH = os.path.join(settings.PROJECT_ROOT, 'sample_files')
 
     def test_create_empty_instance(self):
         TestModel.objects.create()
