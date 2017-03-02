@@ -1,5 +1,5 @@
 from django import forms
-from constrainedfilefield.tests.models import TestModel, TestModelNoValidate, TestElement
+from .models import TestModel, TestModelNoValidate, TestElement
 
 
 class TestModelForm(forms.ModelForm):
