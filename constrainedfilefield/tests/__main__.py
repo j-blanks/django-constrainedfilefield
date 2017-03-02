@@ -4,10 +4,12 @@ import os
 os.environ['DJANGO_SETTINGS_MODULE'] = 'constrainedfilefield.tests.settings'
 
 if __name__ == "__main__":
-    import sys
     # https://docs.djangoproject.com/en/1.8/topics/settings/#calling-django-setup-is-required-for-standalone-django-usage
     import django
-    from django.test.runner import DiscoverRunner
 
     django.setup()
+
+    import sys
+    from django.test.runner import DiscoverRunner
+
     sys.exit(DiscoverRunner(verbosity=1).run_tests(['constrainedfilefield']))
