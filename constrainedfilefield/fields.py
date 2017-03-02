@@ -50,10 +50,6 @@ class ConstrainedFileField(models.FileField):
 
         super(ConstrainedFileField, self).__init__(*args, **kwargs)
 
-        if self.js_checker:
-            self.widget = forms.FileInput(
-                attrs={'onchange': 'validateFileSize(this, %d);' % (self.max_upload_size,)})
-
     def clean(self, *args, **kwargs):
         data = super(ConstrainedFileField, self).clean(*args, **kwargs)
 
@@ -83,6 +79,13 @@ class ConstrainedFileField(models.FileField):
                     {'type': content_type_magic,
                      'allowed': self.content_types})
         return data
+
+    def formfield(self, **kwargs):
+        formfield = super(ConstrainedFileField, self).formfield(**kwargs)
+        if self.js_checker:
+            formfield.widget.attrs.update(
+                {'onchange': 'validateFileSize(this, %d);' % (self.max_upload_size,)})
+        return formfield
 
     def deconstruct(self):
         name, path, args, kwargs = super(ConstrainedFileField, self).deconstruct()
