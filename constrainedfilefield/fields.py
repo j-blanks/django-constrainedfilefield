@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from django import forms
 from django.db import models
 from django.template.defaultfilters import filesizeformat
@@ -81,6 +82,20 @@ class ConstrainedFileField(models.FileField):
         return data
 
     def formfield(self, **kwargs):
+        """
+        Usual Form for a django.models.FileField with optional javascript file size
+        checker. Can thus be customized as any other Form for a django.models.FileField.
+
+        Parameters
+        ----------
+        kwargs
+            will be passed to super().formfield()
+
+        Returns
+        -------
+        django.forms.FileField
+
+        """
         formfield = super(ConstrainedFileField, self).formfield(**kwargs)
         if self.js_checker:
             formfield.widget.attrs.update(

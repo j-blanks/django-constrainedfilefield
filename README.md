@@ -3,11 +3,26 @@
 [![License](https://img.shields.io/badge/License-BSD--3--Clause-blue.svg?style=flat-square)](/LICENSE)
 [![Build Status](https://travis-ci.org/mbourqui/django-constrainedfilefield.svg?branch=master)](https://travis-ci.org/mbourqui/django-constrainedfilefield)
 
+
 # ConstrainedFileField for Django
 
 This Django app adds a new field type, `ConstrainedFileField`, that has the
-capability of checking the document size and type. Also provides a javascript checker for the 
+capability of checking the file size and type. Also provides a javascript checker for the 
 form field.
+
+
+## Features
+* File size limitation
+* File type limitation
+* Javascript file size checker
+
+
+## Requirements
+* Python>=2.7
+* Django>=1.8.17
+* `python-magic` >= 0.4.2
+
+**Note** that this package depends on `python-magic` *if* you want to check the file type.
 
 ## Installation
 
@@ -15,7 +30,7 @@ form field.
  * Add `constrainedfilefield` to the `INSTALLED_APPS` in your project's settings (usually `settings
  .py`)
  
-**Note** that this package depends on `python-magic` if you want to check the document type.
+
 
 ## Validate single file
 
@@ -49,6 +64,7 @@ form field is used
 and activate this feature by setting `js_checker=True` when instantiating the 
 `ConstrainedFileField`.
 
+
 ## Note on DOS attacks
 
 Important note: the check of the file size is made by Django once the whole file has been uploaded
@@ -58,10 +74,15 @@ wants to block the server by sending huge files (e. g. of several Gb).
 
 To avoid this, you need to configure your front end to limit the size of uploaded files. How to do
 it depends on the software you are using. For example, if you use apache, you should use
-**LimitRequestBody** directive (http://httpd.apache.org/docs/2.2/mod/core.html#limitrequestbody).
+[**LimitRequestBody**](http://httpd.apache.org/docs/2.2/mod/core.html#limitrequestbody) directive.
 
 This is a complementary measure, because you'll usually want normal users that exceed the size by a
 reasonable amount to get a friendly form validation message, while attacking users will see how their
 connection is abruptly cut before the file finishes uploading. So the recommended setting is to give
 `max_upload_size` a small value (e.g. 5Mb) and `LimitRequestBody` a higher one (e.g. 100Mb).
 
+
+## Credits
+
+This is a fork of [django-validated-file](https://github.com/kaleidos/django-validated-file) from
+[Kaleidos](https://github.com/kaleidos).

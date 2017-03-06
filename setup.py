@@ -29,7 +29,7 @@ setup(
         '': ['*.po', '*.mo'],
     },
     install_requires=[
-        'Django>=1.8.0',
+        'Django>=1.8.17',
         'python-magic >= 0.4.2',
     ],
     setup_requires=[
