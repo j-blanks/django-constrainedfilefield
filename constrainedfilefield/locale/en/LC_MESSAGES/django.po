@@ -1,37 +1,28 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
+# This file is distributed under the same license as the django-constrainedfilefield package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
+"Project-Id-Version: 3.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-05-14 06:40-0500\n"
+"POT-Creation-Date: 2017-03-06 13:40+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: \n"
+"Language: en\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: __init__.py:28
+#: fields.py:59
 #, python-format
-msgid "Files of type %(type)s are not supported."
+msgid "File size exceeds limit: %(current_size)s. Limit is %(max_size)s."
 msgstr ""
 
-#: __init__.py:32
+#: fields.py:78
 #, python-format
-msgid ""
-"Files of size greater than %(max_size)s are not allowed. Your file is "
-"%(current_size)s"
-msgstr ""
-
-#: __init__.py:73
-#, python-format
-msgid ""
-"Please keep the total uploaded files under %(total_size)s. With this file, "
-"the total would be %(exceed_size)s."
+msgid "Unsupported file type: %(type)s. Allowed types are %(allowed)s"
 msgstr ""

@@ -1,5 +1,8 @@
 # Changelog
 
+## 3.0.1 (TBA)
+* Closes #1 (commit)
+
 ## 3.0.0 (2017.03.06)
 * Update Field
   * New name
