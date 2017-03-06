@@ -1,9 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-__license__ = 'BSD'
+__license__ = 'BSD-3-Clause'
 __author__ = 'Marc Bourqui'
-__version__ = '0.0.0-dev'
+__version__ = '3.0.0'
 __version_info__ = tuple(
     [int(num) if num.isdigit() else num for num in __version__.replace('-', '.', 1).split('.')])
-__status__ = 'Development'
+
