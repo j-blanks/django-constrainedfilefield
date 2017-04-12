@@ -22,17 +22,14 @@ form field.
 * Django>=1.8.17
 * `python-magic` >= 0.4.2
 
-**Note** that this package depends on `python-magic` *if* you want to check the file type.
+**Note** that this package depends on `python-magic` *iff* you want to check the file type.
 
 ## Installation
 
- * Download and install package with `python setup.py install`.
- * Add `constrainedfilefield` to the `INSTALLED_APPS` in your project's settings (usually `settings
- .py`)
- 
+* Download and install package with `python setup.py install`.
 
-
-## Validate single file
+## Usage
+### Validate single file
 
 Create a model and add a field of type `ConstrainedFileField`. You can add a maximum size in bytes
 and a list of valid mime types that will be allowed. The list of all mime types is available
