@@ -70,3 +70,4 @@ node_modules/
 .eggs/*
 build/*
 dist/*
+README.rst
