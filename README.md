@@ -1,6 +1,7 @@
 [![Python](https://img.shields.io/badge/Python-3.5-blue.svg?style=flat-square)](/)
 [![Django](https://img.shields.io/badge/Django-1.10-blue.svg?style=flat-square)](/)
 [![License](https://img.shields.io/badge/License-BSD--3--Clause-blue.svg?style=flat-square)](/LICENSE)
+[![PyPI](https://img.shields.io/pypi/v/django_constrainedfilefield.svg?style=flat-square)](https://pypi.python.org/pypi?:action=display&name=django-constrainedfilefield)
 [![Build Status](https://travis-ci.org/mbourqui/django-constrainedfilefield.svg?branch=master)](https://travis-ci.org/mbourqui/django-constrainedfilefield)
 
 
@@ -26,7 +27,7 @@ form field.
 
 ## Installation
 
-* Download and install package with `python setup.py install`.
+1. Run `pip install django-constrainedfilefield`.
 
 ## Usage
 ### Validate single file

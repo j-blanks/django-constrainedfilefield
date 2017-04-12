@@ -1,3 +1,7 @@
+include LICENSE
+include README.md
 include README.rst
-include validatedfile/locale/*/LC_MESSAGES/*
+include CHANGELOG.md
+include constrainedfilefield/locale/*/LC_MESSAGES/*
+recursive-include docs *
 
