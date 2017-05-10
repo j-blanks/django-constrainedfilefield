@@ -1,11 +1,17 @@
 from django import forms
 
-from constrainedfilefield.tests.models import TestModel, TestModelNoValidate, TestElement
+from constrainedfilefield.tests.models import TestModel, TestModelJs, TestModelNoValidate, TestElement
 
 
 class TestModelForm(forms.ModelForm):
     class Meta:
         model = TestModel
+        fields = ['the_file']
+
+
+class TestModelFormJs(forms.ModelForm):
+    class Meta:
+        model = TestModelJs
         fields = ['the_file']
 
 

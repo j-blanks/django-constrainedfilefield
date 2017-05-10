@@ -12,6 +12,16 @@ class TestModel(models.Model):
         max_upload_size=10240)
 
 
+class TestModelJs(models.Model):
+    the_file = ConstrainedFileField(
+        null=True,
+        blank=True,
+        upload_to='testfile',
+        content_types=['image/png'],
+        max_upload_size=10240,
+        js_checker=True)
+
+
 class TestModelNoValidate(models.Model):
     the_file = ConstrainedFileField(
         null=True,

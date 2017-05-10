@@ -6,7 +6,7 @@ from django.core.files import File
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import TestCase
 
-from constrainedfilefield.tests.forms import TestModelForm, TestModelNoValidateForm, TestElementForm
+from constrainedfilefield.tests.forms import TestModelForm, TestModelFormJs, TestModelNoValidateForm, TestElementForm
 from constrainedfilefield.tests.models import TestModel, TestContainer
 
 
@@ -28,6 +28,19 @@ class ConstrainedFileFieldTest(TestCase):
 
     def test_form_ok(self):
         form = self._create_bound_test_model_form(form_class=TestModelForm,
+                                                  orig_filename='image2k.png',
+                                                  dest_filename='the_file.png',
+                                                  content_type='image/png')
+        self.assertTrue(form.is_valid())
+        instance = form.save()
+
+        self._check_file_url(instance.the_file, 'the_file.png')
+
+        instance.the_file.delete()
+        instance.delete()
+
+    def test_form_ok_js(self):
+        form = self._create_bound_test_model_form(form_class=TestModelFormJs,
                                                   orig_filename='image2k.png',
                                                   dest_filename='the_file.png',
                                                   content_type='image/png')
