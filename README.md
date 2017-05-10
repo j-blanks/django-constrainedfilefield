@@ -31,7 +31,10 @@ form field.
 
 ## Usage
 ### Validate single file
+The field can be used in forms or model forms like a normal `FileField`. If a user tries to upload
+a file which is too large or without a valid type, a form validation error will occur.
 
+#### Creating form from model
 Create a model and add a field of type `ConstrainedFileField`. You can add a maximum size in bytes
 and a list of valid mime types that will be allowed. The list of all mime types is available
 here: http://www.iana.org/assignments/media-types/index.html.
@@ -42,16 +45,40 @@ from constrainedfilefield.fields import ConstrainedFileField
 
 class TestModel(models.Model):
     the_file = ConstrainedFileField(
-                    null = True,
-                    blank = True,
-                    upload_to = 'testfile',
-                    max_upload_size = 10240,
-                    content_types = ['image/png'])
+                            null=True,
+                            blank=True,
+                            upload_to='testfile',
+                            content_types=['image/png'],
+                            max_upload_size=10240
+                                    )
 ```
 
-The field can be used in forms or model forms like a normal `FileField`. If a user tries to upload
-a file which is too large or without a valid type, a form validation error will occur.
+```
+from django import forms
+from myproject.models import TestModel
 
+class TestModelForm(forms.ModelForm):
+    class Meta:
+        model = TestModel
+        fields = ['the_file']
+```
+
+#### Building a form
+```
+from django import forms
+from constrainedfilefield.fields import ConstrainedFileField
+
+class TestNoModelForm(forms.Form):
+    the_file = ConstrainedFileField(
+                            null=True,
+                            blank=True,
+                            upload_to='testfile',
+                            content_types=['image/png'],
+                            max_upload_size=10240
+                                    ).formfield()
+```
+
+#### Javascript file size validation
 Additionally, to prevent user uploading too large files, a javascript checker can be set to the 
 form field. In order to achieve that, you need to include the javascript in the template where the
 form field is used
