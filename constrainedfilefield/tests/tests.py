@@ -6,7 +6,8 @@ from django.core.files import File
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import TestCase
 
-from constrainedfilefield.tests.forms import TestModelForm, TestModelFormJs, TestModelNoValidateForm, TestElementForm
+from constrainedfilefield.tests.forms import TestModelForm, TestModelFormJs, TestModelNoValidateForm, TestElementForm, \
+    TestNoModelForm, TestNoModelJsForm
 from constrainedfilefield.tests.models import TestModel, TestContainer
 
 
@@ -39,7 +40,7 @@ class ConstrainedFileFieldTest(TestCase):
         instance.the_file.delete()
         instance.delete()
 
-    def test_form_ok_js(self):
+    def test_form_js_ok(self):
         form = self._create_bound_test_model_form(form_class=TestModelFormJs,
                                                   orig_filename='image2k.png',
                                                   dest_filename='the_file.png',
@@ -120,6 +121,30 @@ class ConstrainedFileFieldTest(TestCase):
 
         instance.delete()
 
+    def test_nomodel_form_ok(self):
+        form = self._create_bound_test_model_form(form_class=TestNoModelForm,
+                                                  orig_filename='image2k.png',
+                                                  dest_filename='the_file.png',
+                                                  content_type='image/png')
+        self.assertTrue(form.is_valid())
+
+        self._check_nomodel_file_url(form.the_file, 'the_file.png')
+
+        for uploaded_file in form.files.values():
+            uploaded_file.close()
+
+    def test_nomodel_form_js_ok(self):
+        form = self._create_bound_test_model_form(form_class=TestNoModelJsForm,
+                                                  orig_filename='image2k.png',
+                                                  dest_filename='the_file.png',
+                                                  content_type='image/png')
+        self.assertTrue(form.is_valid())
+
+        self._check_nomodel_file_url(form.the_file, 'the_file.png')
+
+        for uploaded_file in form.files.values():
+            uploaded_file.close()
+
     # Utilities
 
     def _get_sample_file(self, filename):
@@ -129,6 +154,10 @@ class ConstrainedFileFieldTest(TestCase):
     def _check_file_url(self, filefield, filename):
         url = os.path.join(settings.MEDIA_URL, filefield.field.upload_to, filename)
         self.assertEqual(filefield.url, url)
+
+    def _check_nomodel_file_url(self, filefield, filename):
+        url = os.path.join(settings.MEDIA_URL, filefield.upload_to, filename)
+        self.assertEqual(filefield.storage.url(os.path.join(filefield.upload_to,filename)), url)
 
     def _create_bound_test_model_form(self, form_class, orig_filename=None,
                                       dest_filename=None, content_type=None):
