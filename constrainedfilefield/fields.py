@@ -39,7 +39,7 @@ class ConstrainedFileField(models.FileField):
 
     """
 
-    description = "A FileField with constraints on size and/or type"
+    description = _("A FileField with constraints on size and/or type")
 
     def __init__(self, *args, **kwargs):
         self.max_upload_size = kwargs.pop("max_upload_size", 0)
@@ -113,3 +113,9 @@ class ConstrainedFileField(models.FileField):
         if self.js_checker:
             kwargs["js_checker"] = self.js_checker
         return name, path, args, kwargs
+
+    def __str__(self):
+        if hasattr(self, 'model'):
+            return super(ConstrainedFileField).__str__()
+        else:
+            return self.__class__.__name__
