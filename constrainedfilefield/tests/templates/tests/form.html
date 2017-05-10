@@ -8,21 +8,11 @@
 
 <body>
 
-<div class="row">
-    <label class="col-sm-4 col-form-label text-right" for="{{ form.the_file.id_for_label }}">
-        {{ form.the_file.label }}
-    </label>
-    <div class="col-sm">
-        {% form_error form.the_file.errors %}
-        <label class="custom-file">
-            {{ form.the_file }}
-            <span class="custom-file-control"></span>
-        </label>
-        <small id="fileHelp" class="form-text text-muted">
-            Max file size is {{ form.the_file.field.max_upload_size }} bytes.
-        </small>
-    </div>
-</div>
+<form action="" method="post">
+    {% csrf_token %}
+    {{ form }}
+    <input type="submit" value="Submit" />
+</form>
 
 <script src="{% static 'constrainedfilefield/js/file_checker.js' %}"></script>
 

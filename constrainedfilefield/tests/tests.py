@@ -4,7 +4,7 @@ import os.path
 from django.conf import settings
 from django.core.files import File
 from django.core.files.uploadedfile import SimpleUploadedFile
-from django.test import TestCase
+from django.test import TestCase, Client
 
 from constrainedfilefield.tests.forms import TestModelForm, TestModelFormJs, TestModelNoValidateForm, TestElementForm, \
     TestNoModelForm, TestNoModelJsForm
@@ -13,6 +13,9 @@ from constrainedfilefield.tests.models import TestModel, TestContainer
 
 class ConstrainedFileFieldTest(TestCase):
     SAMPLE_FILES_PATH = os.path.join(settings.BASE_DIR, 'sample_files')
+
+    # -------
+    # BACKEND
 
     def test_create_empty_instance(self):
         TestModel.objects.create()
@@ -128,8 +131,6 @@ class ConstrainedFileFieldTest(TestCase):
                                                   content_type='image/png')
         self.assertTrue(form.is_valid())
 
-        self._check_nomodel_file_url(form.the_file, 'the_file.png')
-
         for uploaded_file in form.files.values():
             uploaded_file.close()
 
@@ -140,11 +141,19 @@ class ConstrainedFileFieldTest(TestCase):
                                                   content_type='image/png')
         self.assertTrue(form.is_valid())
 
-        self._check_nomodel_file_url(form.the_file, 'the_file.png')
-
         for uploaded_file in form.files.values():
             uploaded_file.close()
 
+    # -------
+    # FRONTEND
+
+    def test_nomodel_form_js_view_ok(self):
+        c = Client()
+        response = c.get('/nomodel/')
+        # FIXME: validate response content: form is included as expected
+        assert response.status_code == 200
+
+    # -------
     # Utilities
 
     def _get_sample_file(self, filename):
@@ -154,10 +163,6 @@ class ConstrainedFileFieldTest(TestCase):
     def _check_file_url(self, filefield, filename):
         url = os.path.join(settings.MEDIA_URL, filefield.field.upload_to, filename)
         self.assertEqual(filefield.url, url)
-
-    def _check_nomodel_file_url(self, filefield, filename):
-        url = os.path.join(settings.MEDIA_URL, filefield.upload_to, filename)
-        self.assertEqual(filefield.storage.url(os.path.join(filefield.upload_to,filename)), url)
 
     def _create_bound_test_model_form(self, form_class, orig_filename=None,
                                       dest_filename=None, content_type=None):

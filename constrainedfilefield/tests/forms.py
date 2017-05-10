@@ -48,7 +48,7 @@ class TestNoModelForm(forms.Form):
                                     blank=True,
                                     upload_to='testfile',
                                     content_types=['image/png'],
-                                    max_upload_size=10240)
+                                    max_upload_size=10240).formfield()
 
 
 class TestNoModelJsForm(forms.Form):
@@ -58,4 +58,4 @@ class TestNoModelJsForm(forms.Form):
                                     upload_to='testfile',
                                     content_types=['image/png'],
                                     max_upload_size=10240,
-                                    js_checker=True)
+                                    js_checker=True).formfield()

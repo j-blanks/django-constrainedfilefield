@@ -57,7 +57,7 @@ form field. In order to achieve that, you need to include the javascript in the 
 form field is used
 
     {% load static %}
-    <script src="{% static "constrainedfilefield/js/file_checker.js" %}"></script>
+    <script src="{% static 'constrainedfilefield/js/file_checker.js' %}"></script>
 
 and activate this feature by setting `js_checker=True` when instantiating the 
 `ConstrainedFileField`.
