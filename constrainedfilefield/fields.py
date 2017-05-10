@@ -111,5 +111,5 @@ class ConstrainedFileField(models.FileField):
         if self.mime_lookup_length:
             kwargs["mime_lookup_length"] = self.mime_lookup_length
         if self.js_checker:
-            kwargs["js_checker"] = self.mime_lookup_length
+            kwargs["js_checker"] = self.js_checker
         return name, path, args, kwargs
