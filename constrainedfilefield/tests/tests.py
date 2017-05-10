@@ -6,8 +6,8 @@ from django.core.files import File
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import TestCase
 
-from .forms import TestModelForm, TestModelNoValidateForm, TestElementForm
-from .models import TestModel, TestContainer
+from constrainedfilefield.tests.forms import TestModelForm, TestModelNoValidateForm, TestElementForm
+from constrainedfilefield.tests.models import TestModel, TestContainer
 
 
 class ConstrainedFileFieldTest(TestCase):

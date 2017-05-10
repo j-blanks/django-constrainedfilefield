@@ -1,6 +1,6 @@
 from django.db import models
 
-from ..fields import ConstrainedFileField
+from constrainedfilefield.fields import ConstrainedFileField
 
 
 class TestModel(models.Model):
