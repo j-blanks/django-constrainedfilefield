@@ -4,14 +4,18 @@ import os.path
 from django.conf import settings
 from django.core.files import File
 from django.core.files.uploadedfile import SimpleUploadedFile
-from django.test import TestCase
+from django.test import TestCase, Client
 
-from .forms import TestModelForm, TestModelNoValidateForm, TestElementForm
-from .models import TestModel, TestContainer
+from constrainedfilefield.tests.forms import TestModelForm, TestModelFormJs, TestModelNoValidateForm, TestElementForm, \
+    TestNoModelForm, TestNoModelJsForm
+from constrainedfilefield.tests.models import TestModel, TestContainer
 
 
 class ConstrainedFileFieldTest(TestCase):
     SAMPLE_FILES_PATH = os.path.join(settings.BASE_DIR, 'sample_files')
+
+    # -------
+    # BACKEND
 
     def test_create_empty_instance(self):
         TestModel.objects.create()
@@ -28,6 +32,19 @@ class ConstrainedFileFieldTest(TestCase):
 
     def test_form_ok(self):
         form = self._create_bound_test_model_form(form_class=TestModelForm,
+                                                  orig_filename='image2k.png',
+                                                  dest_filename='the_file.png',
+                                                  content_type='image/png')
+        self.assertTrue(form.is_valid())
+        instance = form.save()
+
+        self._check_file_url(instance.the_file, 'the_file.png')
+
+        instance.the_file.delete()
+        instance.delete()
+
+    def test_form_js_ok(self):
+        form = self._create_bound_test_model_form(form_class=TestModelFormJs,
                                                   orig_filename='image2k.png',
                                                   dest_filename='the_file.png',
                                                   content_type='image/png')
@@ -107,6 +124,36 @@ class ConstrainedFileFieldTest(TestCase):
 
         instance.delete()
 
+    def test_nomodel_form_ok(self):
+        form = self._create_bound_test_model_form(form_class=TestNoModelForm,
+                                                  orig_filename='image2k.png',
+                                                  dest_filename='the_file.png',
+                                                  content_type='image/png')
+        self.assertTrue(form.is_valid())
+
+        for uploaded_file in form.files.values():
+            uploaded_file.close()
+
+    def test_nomodel_form_js_ok(self):
+        form = self._create_bound_test_model_form(form_class=TestNoModelJsForm,
+                                                  orig_filename='image2k.png',
+                                                  dest_filename='the_file.png',
+                                                  content_type='image/png')
+        self.assertTrue(form.is_valid())
+
+        for uploaded_file in form.files.values():
+            uploaded_file.close()
+
+    # -------
+    # FRONTEND
+
+    def test_nomodel_form_js_view_ok(self):
+        c = Client()
+        response = c.get('/nomodel/')
+        # FIXME: validate response content: form is included as expected
+        assert response.status_code == 200
+
+    # -------
     # Utilities
 
     def _get_sample_file(self, filename):

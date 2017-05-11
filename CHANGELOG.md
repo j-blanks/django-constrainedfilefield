@@ -1,7 +1,14 @@
 # Changelog
 
+## 3.0.4 (2017.05.11)
+* Close #2 (commit 41ba77d)
+* Update documentation
+* Update tests (still ongoing)
+* Integration with coveralls.io
+* Fix js_checker issue in field deconstruct
+
 ## 3.0.3 (2017.04.12)
-* Closes #1 (commit)
+* Closes #1 (commit 1ff3fc8)
 * Travis config
 * Package metadata
 * PyPI release

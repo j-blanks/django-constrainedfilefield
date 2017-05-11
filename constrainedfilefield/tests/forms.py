@@ -1,11 +1,17 @@
 from django import forms
 
-from .models import TestModel, TestModelNoValidate, TestElement
+from constrainedfilefield.tests.models import TestModel, TestModelJs, TestModelNoValidate, TestElement
 
 
 class TestModelForm(forms.ModelForm):
     class Meta:
         model = TestModel
+        fields = ['the_file']
+
+
+class TestModelFormJs(forms.ModelForm):
+    class Meta:
+        model = TestModelJs
         fields = ['the_file']
 
 
@@ -34,3 +40,22 @@ class TestElementForm(forms.ModelForm):
         element = super(TestElementForm, self).save(commit=False)
         element.container = self.container
         element.save()
+
+
+class TestNoModelForm(forms.Form):
+    from constrainedfilefield.fields import ConstrainedFileField
+    the_file = ConstrainedFileField(null=True,
+                                    blank=True,
+                                    upload_to='testfile',
+                                    content_types=['image/png'],
+                                    max_upload_size=10240).formfield()
+
+
+class TestNoModelJsForm(forms.Form):
+    from constrainedfilefield.fields import ConstrainedFileField
+    the_file = ConstrainedFileField(null=True,
+                                    blank=True,
+                                    upload_to='testfile',
+                                    content_types=['image/png'],
+                                    max_upload_size=10240,
+                                    js_checker=True).formfield()
