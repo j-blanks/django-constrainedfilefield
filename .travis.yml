@@ -16,7 +16,7 @@ before_install:
     - ./pypi_packager.sh
 install:
   - pip install -q django==$DJANGO_VERSION
-  - pip install -e .
+  - pip install -e .[test]
   - pip install -q coveralls
 script:
   - coverage run --source=constrainedfilefield constrainedfilefield/tests/__main__.py
