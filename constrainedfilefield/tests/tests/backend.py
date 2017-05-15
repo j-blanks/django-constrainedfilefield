@@ -4,7 +4,7 @@ import os.path
 from django.conf import settings
 from django.core.files import File
 from django.core.files.uploadedfile import SimpleUploadedFile
-from django.test import TestCase, Client
+from django.test import TestCase
 
 from constrainedfilefield.tests.forms import TestModelForm, TestModelFormJs, TestModelNoValidateForm, TestElementForm, \
     TestNoModelForm, TestNoModelJsForm
@@ -13,9 +13,6 @@ from constrainedfilefield.tests.models import TestModel, TestContainer
 
 class ConstrainedFileFieldTest(TestCase):
     SAMPLE_FILES_PATH = os.path.join(settings.BASE_DIR, 'sample_files')
-
-    # -------
-    # BACKEND
 
     def test_create_empty_instance(self):
         TestModel.objects.create()
@@ -143,7 +140,6 @@ class ConstrainedFileFieldTest(TestCase):
 
         for uploaded_file in form.files.values():
             uploaded_file.close()
-
 
     # -------
     # Utilities
