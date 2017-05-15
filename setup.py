@@ -30,13 +30,15 @@ setup(
     },
     install_requires=[
         'Django>=1.8.17',
-        'python-magic >= 0.4.2',
     ],
     setup_requires=[
-        'Django>=1.8.0',
+        'Django>=1.8.17',
+    ],
+    test_require=[
+        'Django>=1.8.17',
         'python-magic >= 0.4.2',
     ],
-    keywords='django filefield validation',
+    keywords='django filefield validation file',
     classifiers=[
         'Development Status :: 5 - Production/Stable',
         'Environment :: Web Environment',

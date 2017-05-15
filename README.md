@@ -22,9 +22,7 @@ form field.
 ## Requirements
 * Python>=2.7
 * Django>=1.8.17
-* `python-magic` >= 0.4.2
-
-**Note** that this package depends on `python-magic` *iff* you want to check the file type.
+* `python-magic` >= 0.4.2 *iff* you want to check the file type
 
 ## Installation
 
@@ -82,16 +80,15 @@ class TestNoModelForm(forms.Form):
 #### Javascript file size validation
 Additionally, to prevent user uploading too large files, a javascript checker can be set to the 
 form field. In order to achieve that, you need to
-* add `constrainedfilefield` to the `INSTALLED_APPS`. This will load the
+
+1. Add `constrainedfilefield` to the `INSTALLED_APPS`. This will load the
   javascripts from the static files.
-* include the javascript in the template where the form field is used
+* Activate this feature by setting `js_checker=True` when instantiating the
+`ConstrainedFileField`.
+* Include the javascript in the template where the form field is used
 
         {% load static %}
         <script src="{% static 'constrainedfilefield/js/file_checker.js' %}"></script>
-
-
-and activate this feature by setting `js_checker=True` when instantiating the 
-`ConstrainedFileField`.
 
 
 ## Note on DOS attacks
