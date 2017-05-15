@@ -14,4 +14,5 @@ if __name__ == "__main__":
 
     django.setup()
 
-    sys.exit(DiscoverRunner(verbosity=1).run_tests(['constrainedfilefield']))
+    sys.exit(DiscoverRunner(verbosity=1).run_tests(
+        ['constrainedfilefield.tests.tests.backend', 'constrainedfilefield.tests.tests.frontend']))
