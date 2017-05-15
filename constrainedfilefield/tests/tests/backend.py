@@ -74,7 +74,7 @@ class ConstrainedFileFieldTest(TestCase):
         self.assertEqual(len(form.errors['the_file']), 1)
         self.assertEqual(form.errors['the_file'][0],
                          u"Unsupported file type: application/pdf. "
-                         u"Allowed types are ['image/png']")
+                         u"Allowed types are ['image/png'].")
 
     def test_form_invalid_filetype_and_size(self):
         form = self._create_bound_test_model_form(form_class=TestModelForm,
@@ -97,7 +97,7 @@ class ConstrainedFileFieldTest(TestCase):
         self.assertEqual(len(form.errors['the_file']), 1)
         self.assertEqual(form.errors['the_file'][0],
                          u"Unsupported file type: application/pdf. "
-                         u"Allowed types are ['image/png']")
+                         u"Allowed types are ['image/png'].")
 
     def test_form_no_validate(self):
         form = self._create_bound_test_model_form(form_class=TestModelNoValidateForm,

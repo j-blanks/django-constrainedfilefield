@@ -39,7 +39,7 @@ class ConstrainedFileField(models.FileField):
 
     """
 
-    description = _("A FileField with constraints on size and/or type")
+    description = _("A file field with constraints on size and/or type")
 
     def __init__(self, *args, **kwargs):
         self.max_upload_size = kwargs.pop("max_upload_size", 0)
@@ -76,7 +76,7 @@ class ConstrainedFileField(models.FileField):
 
             if uploaded_content_type not in self.content_types:
                 raise forms.ValidationError(
-                    _('Unsupported file type: %(type)s. Allowed types are %(allowed)s') %
+                    _('Unsupported file type: %(type)s. Allowed types are %(allowed)s.') %
                     {'type': content_type_magic,
                      'allowed': self.content_types})
         return data
