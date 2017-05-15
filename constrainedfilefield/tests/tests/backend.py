@@ -144,14 +144,6 @@ class ConstrainedFileFieldTest(TestCase):
         for uploaded_file in form.files.values():
             uploaded_file.close()
 
-    # -------
-    # FRONTEND
-
-    def test_nomodel_form_js_view_ok(self):
-        c = Client()
-        response = c.get('/nomodel/')
-        # FIXME: validate response content: form is included as expected
-        assert response.status_code == 200
 
     # -------
     # Utilities
