@@ -81,11 +81,14 @@ class TestNoModelForm(forms.Form):
 
 #### Javascript file size validation
 Additionally, to prevent user uploading too large files, a javascript checker can be set to the 
-form field. In order to achieve that, you need to include the javascript in the template where the
-form field is used
+form field. In order to achieve that, you need to
+* add `constrainedfilefield` to the `INSTALLED_APPS`. This will load the
+  javascripts from the static files.
+* include the javascript in the template where the form field is used
 
-    {% load static %}
-    <script src="{% static 'constrainedfilefield/js/file_checker.js' %}"></script>
+        {% load static %}
+        <script src="{% static 'constrainedfilefield/js/file_checker.js' %}"></script>
+
 
 and activate this feature by setting `js_checker=True` when instantiating the 
 `ConstrainedFileField`.
