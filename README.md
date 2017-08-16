@@ -3,7 +3,7 @@
 [![License](https://img.shields.io/badge/License-BSD--3--Clause-blue.svg?style=flat-square)](/LICENSE)
 [![PyPI](https://img.shields.io/pypi/v/django_constrainedfilefield.svg?style=flat-square)](https://pypi.python.org/pypi/django-constrainedfilefield)
 [![Build Status](https://travis-ci.org/mbourqui/django-constrainedfilefield.svg?branch=master)](https://travis-ci.org/mbourqui/django-constrainedfilefield)
-[![Coverage Status](https://coveralls.io/repos/github/mbourqui/django-constrainedfilefield/badge.svg?branch=develop%2Ftests)](https://coveralls.io/github/mbourqui/django-constrainedfilefield?branch=develop%2Ftests)
+[![Coverage Status](https://coveralls.io/repos/github/mbourqui/django-constrainedfilefield/badge.svg)](https://coveralls.io/github/mbourqui/django-constrainedfilefield)
 
 
 # ConstrainedFileField for Django
