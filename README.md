@@ -26,7 +26,13 @@ form field.
 
 ## Installation
 
-1. Run `pip install django-constrainedfilefield`.
+### Using PyPI
+1. Run `pip install django-constrainedfilefield`
+
+### Using the source code
+1. Run `./pypi_packager.sh`
+1. Run `pip install dist/django_constrainedfilefield-x.y.z-none-any.wheel`, where x.y.z must be replaced by the actual
+   version number
 
 ## Usage
 ### Validate single file
