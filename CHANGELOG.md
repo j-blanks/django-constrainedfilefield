@@ -1,5 +1,10 @@
 # Changelog
 
+## 3.06 (2017.05.15)
+* Close #4 (commit 982991c)
+* Update messages
+* Update tests (still ongoing)
+
 ## 3.0.4 (2017.05.11)
 * Close #2 (commit 41ba77d)
 * Update documentation
@@ -21,4 +26,3 @@
 * Update tests
   * Now working with latest versions of Python and Django
   * Integration with Travis CI
-
