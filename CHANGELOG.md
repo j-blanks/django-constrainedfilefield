@@ -1,5 +1,9 @@
 # Changelog
 
+## 3.0.7 (2017.08.16)
+* Package metadata updates
+* Usage of lazy texts for translations
+
 ## 3.06 (2017.05.15)
 * Close #4 (commit 982991c)
 * Update messages
