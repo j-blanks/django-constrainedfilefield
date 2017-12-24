@@ -3,6 +3,8 @@ from django import forms
 from django.db import models
 from django.template.defaultfilters import filesizeformat
 from django.utils.translation import ugettext_lazy as _
+from django.conf import settings
+import os
 
 
 class ConstrainedFileField(models.FileField):
@@ -66,7 +68,12 @@ class ConstrainedFileField(models.FileField):
             file = data.file
             uploaded_content_type = getattr(file, 'content_type', '')
 
-            mg = magic.Magic(mime=True)
+            # magic_file_path used only for Windows.
+            magic_file_path = getattr(settings, "MAGIC_FILE_PATH", None)
+            if magic_file_path and os.name == 'nt':
+                mg = magic.Magic(mime=True, magic_file=magic_file_path)
+            else:
+                mg = magic.Magic(mime=True)
             content_type_magic = mg.from_buffer(file.read(self.mime_lookup_length))
             file.seek(0)
 

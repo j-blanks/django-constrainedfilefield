@@ -28,12 +28,14 @@ form field.
 
 ### Using PyPI
 1. Run `pip install django-constrainedfilefield`
+1. For windows, you must download the dll files and .magic file at https://github.com/pidydx/libmagicwin64 (32-bit version: http://gnuwin32.sourceforge.net/packages/file.htm)), add them to C:\\Windows\\System32 (or to a folder in your PATH), and set MAGIC_FILE_PATH="..." to the path of your .magic file in your settings.py. For more information about the files to download, go to: https://github.com/ahupp/python-magic/blob/43df08c5ed63d7aad839695f311ca1be2eeb1ecb/README.md#dependencies
 
 ### Using the source code
 1. Make sure [`pandoc`](http://pandoc.org/index.html) is installed
 1. Run `./pypi_packager.sh`
 1. Run `pip install dist/django_constrainedfilefield-x.y.z-[...].wheel`, where `x.y.z` must be replaced by the actual
    version number and `[...]` depends on your packaging configuration
+1. For windows, you must download the dll files and .magic file at https://github.com/pidydx/libmagicwin64 (32-bit version: http://gnuwin32.sourceforge.net/packages/file.htm)), add them to C:\\Windows\\System32 (or to a folder in your PATH), and set MAGIC_FILE_PATH="..." to the path of your .magic file in your settings.py. For more information about the files to download, go to: https://github.com/ahupp/python-magic/blob/43df08c5ed63d7aad839695f311ca1be2eeb1ecb/README.md#dependencies
 
 ## Usage
 ### Validate single file
