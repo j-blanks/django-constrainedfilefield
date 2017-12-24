@@ -1,5 +1,8 @@
 # Changelog
 
+## 3.1.0 (2017.12.24)
+* Support magic on Windows
+
 ## 3.0.7 (2017.08.16)
 * Package metadata updates
 * Usage of lazy texts for translations
