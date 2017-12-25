@@ -32,13 +32,16 @@ setup(
         '': ['*.po', '*.mo'],
     },
     install_requires=[
-        'Django>=1.8.17',
+        'django>=1.8,<2.0; python_version<"3.4"',
+        'django>=2.0; python_version>="3.4"',
     ],
     setup_requires=[
-        'Django>=1.8.17',
+        'django>=1.8,<2.0; python_version<"3.4"',
+        'django>=2.0; python_version>="3.4"',
     ],
     test_require=[
-        'Django>=1.8.17',
+        'django>=1.8,<2.0; python_version<"3.4"',
+        'django>=2.0; python_version>="3.4"',
         'python-magic >= 0.4.2',
     ],
     extras_require={
