@@ -36,6 +36,7 @@ class TestContainer(models.Model):
 class TestElement(models.Model):
     container = models.ForeignKey(
         TestContainer,
+        on_delete=models.CASCADE,
         related_name='test_elements')
     the_file = ConstrainedFileField(
         null=True,
