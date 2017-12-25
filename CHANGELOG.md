@@ -1,7 +1,7 @@
 # Changelog
 
 ## 3.1.0 (2017.12.24)
-* Support magic on Windows
+* Windows support for magic, thanks to PR #7 from @epicfaace
 
 ## 3.0.7 (2017.08.16)
 * Package metadata updates
