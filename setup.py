@@ -35,18 +35,9 @@ setup(
         'django>=1.8,<2.0; python_version<"3.7"',
         'django>=2.0; python_version>="3.4"',
     ],
-    setup_requires=[
-        'django>=1.8,<2.0; python_version<"3.7"',
-        'django>=2.0; python_version>="3.4"',
-    ],
-    test_require=[
-        'django>=1.8,<2.0; python_version<"3.7"',
-        'django>=2.0; python_version>="3.4"',
+    tests_require=[
         'python-magic >= 0.4.2',
     ],
-    extras_require={
-        'test': ['python-magic >= 0.4.2'],
-    },
     keywords='django filefield validation file',
     classifiers=[
         'Development Status :: 5 - Production/Stable',
