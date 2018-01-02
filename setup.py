@@ -38,6 +38,9 @@ setup(
     tests_require=[
         'python-magic >= 0.4.2',
     ],
+    extras_require={
+        'test': ['python-magic >= 0.4.2'],
+    },
     keywords='django filefield validation file',
     classifiers=[
         'Development Status :: 5 - Production/Stable',
