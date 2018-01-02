@@ -41,6 +41,7 @@ setup(
     ],
     tests_require=TESTS_REQUIRE,
     extras_require={
+        'filetype': TESTS_REQUIRE,
         'coverage': TESTS_REQUIRE,
     },
     keywords='django filefield validation file',

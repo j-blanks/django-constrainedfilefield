@@ -27,7 +27,9 @@ form field.
 ## Installation
 
 ### Using PyPI
-1. Run `pip install django-constrainedfilefield`
+1. Run
+   * `pip install django-constrainedfilefield`, or
+   * `pip install django-constrainedfilefield[filetype]` to ensure `python-magic` is installed.
 1. For windows, you must download the dll files and .magic file at https://github.com/pidydx/libmagicwin64 (32-bit version: http://gnuwin32.sourceforge.net/packages/file.htm)), add them to C:\\Windows\\System32 (or to a folder in your PATH), and set MAGIC_FILE_PATH="..." to the path of your .magic file in your settings.py. For more information about the files to download, go to: https://github.com/ahupp/python-magic/blob/43df08c5ed63d7aad839695f311ca1be2eeb1ecb/README.md#dependencies
 
 ### Using the source code
