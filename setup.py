@@ -15,6 +15,10 @@ with open(os.path.join(os.path.dirname(__file__), 'README.rst')) as readme:
 # allow setup.py to be run from any path
 os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
 
+TESTS_REQUIRE = [
+    'python-magic >= 0.4.2',
+]
+
 setup(
     name='django-constrainedfilefield',
     version=__version__,
@@ -35,11 +39,9 @@ setup(
         'django>=1.8,<2.0; python_version<"3.7"',
         'django>=2.0; python_version>="3.4"',
     ],
-    tests_require=[
-        'python-magic >= 0.4.2',
-    ],
+    tests_require=TESTS_REQUIRE,
     extras_require={
-        'test': ['python-magic >= 0.4.2'],
+        'coverage': TESTS_REQUIRE,
     },
     keywords='django filefield validation file',
     classifiers=[
