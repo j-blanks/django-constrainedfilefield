@@ -42,8 +42,8 @@ setup(
         '': ['*.po', '*.mo'],
     },
     install_requires=[
-        'django>=1.8,<2.0; python_version<"3.7"',
-        'django>=2.0; python_version>="3.4"',
+        'django>=1.8,<2.0; python_version<="3.0"',
+        'django>=1.8; python_version>="3.4"',
     ],
     tests_require=TESTS_REQUIRE,
     extras_require={
