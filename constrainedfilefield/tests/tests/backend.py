@@ -6,9 +6,9 @@ from django.core.files import File
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import TestCase
 
-from constrainedfilefield.tests.forms import TestModelForm, TestModelFormJs, TestModelNoValidateForm, TestElementForm, \
+from constrainedfilefield.tests.forms import TestModelForm, TestModelFormJs, TestModelNoValidateForm, \
     TestNoModelForm, TestNoModelJsForm
-from constrainedfilefield.tests.models import TestModel, TestContainer
+from constrainedfilefield.tests.models import TestModel
 
 
 class ConstrainedFileFieldTest(TestCase):
@@ -160,33 +160,8 @@ class ConstrainedFileFieldTest(TestCase):
                 content=self._get_sample_file(orig_filename).read(),
                 content_type=content_type,
             )
-            files = {'the_file': uploaded_file}
+            files = {'the_file': uploaded_file, 'the_file_path': uploaded_file}
         else:
             files = {}
         form = form_class(data={}, files=files)
-        return form
-
-    def _create_container(self, name):
-        return TestContainer.objects.create(name=name)
-
-    def _add_element(self, container, orig_filename, dest_filename):
-        return container.test_elements.create(
-            the_file=File(self._get_sample_file(orig_filename), dest_filename)
-        )
-
-    def _create_unbound_test_element_form(self, container):
-        return TestElementForm(container=container)
-
-    def _create_bound_test_element_form(self, container, orig_filename=None,
-                                        dest_filename=None, content_type=None):
-        if orig_filename and dest_filename and content_type:
-            uploaded_file = SimpleUploadedFile(
-                name=dest_filename,
-                content=self._get_sample_file(orig_filename).read(),
-                content_type=content_type,
-            )
-            files = {'the_file': uploaded_file}
-        else:
-            files = {}
-        form = TestElementForm(container=container, data={}, files=files)
         return form

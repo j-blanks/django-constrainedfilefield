@@ -4,9 +4,6 @@ BASE_DIR = os.path.dirname(os.path.realpath(__file__))
 
 DEBUG = True
 
-AUTHNET_LOGIN_ID = ''
-AUTHNET_TRANSACTION_KEY = ''
-
 SECRET_KEY = 'm+qa*7_8t-=17zt_)9gi)4g%6w*v$xxkh6rwrys*bn9su+5%du'
 
 INSTALLED_APPS = [
