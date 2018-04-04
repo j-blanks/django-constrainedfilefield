@@ -107,7 +107,7 @@ class ConstrainedFileField(models.FileField):
         formfield = super(ConstrainedFileField, self).formfield(**kwargs)
         if self.js_checker:
             formfield.widget.attrs.update(
-                {'onchange': 'validateFileSize(this, %d);' % (self.max_upload_size,)})
+                {'onchange': 'validateFileSize(this, 0, %d);' % (self.max_upload_size,)})
         return formfield
 
     def deconstruct(self):
@@ -139,7 +139,7 @@ class ConstrainedImageField(models.ImageField):
     ----------
     content_types : list of str
         List containing allowed content_types. Example: ['application/pdf', 'image/jpeg']
-    max_upload_size : int
+    [min|max]_upload_size : int
         Maximum file size allowed for upload, in bytes
             1 MB - 1048576 B - 1024**2 B - 2**20 B
             2.5 MB - 2621440 B
@@ -163,16 +163,17 @@ class ConstrainedImageField(models.ImageField):
 
     """
 
-    description = _("A file field with constraints on size and/or type")
+    description = _("An image file field with constraints on size and/or type")
 
     def __init__(self, *args, **kwargs):
-        self.max_upload_size = kwargs.pop("max_upload_size", 0)
-        assert isinstance(self.max_upload_size, int) and self.max_upload_size >= 0
+        self.upload_size = {}
+        for boundary in ['min', 'max']:
+            self.upload_size[boundary] = kwargs.pop(boundary + "_upload_size", 0)
+            assert isinstance(self.upload_size[boundary], int) and self.upload_size[boundary] >= 0
         self.content_types = kwargs.pop("content_types", [])
         self.mime_lookup_length = kwargs.pop("mime_lookup_length", 4096)
         assert isinstance(self.mime_lookup_length, int) and self.mime_lookup_length >= 0
         self.js_checker = kwargs.pop("js_checker", False)
-        # TODO: min_upload_size
         # TODO: [min|max]_[height|width]
 
         super(ConstrainedImageField, self).__init__(*args, **kwargs)
@@ -180,11 +181,13 @@ class ConstrainedImageField(models.ImageField):
     def clean(self, *args, **kwargs):
         data = super(ConstrainedImageField, self).clean(*args, **kwargs)
 
-        if self.max_upload_size and data.size > self.max_upload_size:
+        small = self.upload_size['min'] and data.size < self.upload_size['min']
+        large = self.upload_size['max'] and data.size > self.upload_size['max']
+        if small or large:
             # Ensure no one bypasses the js checker
             raise forms.ValidationError(
-                _('File size exceeds limit: %(current_size)s. Limit is %(max_size)s.') %
-                {'max_size': filesizeformat(self.max_upload_size),
+                _('File size ' + 'below' if small else 'exceeds' + ' limit: %(current_size)s. Limit is %(max_size)s.') %
+                {'size': filesizeformat(self.upload_size['min' if small else 'max']),
                  'current_size': filesizeformat(data.size)})
 
         if self.content_types:
@@ -230,13 +233,14 @@ class ConstrainedImageField(models.ImageField):
         formfield = super(ConstrainedImageField, self).formfield(**kwargs)
         if self.js_checker:
             formfield.widget.attrs.update(
-                {'onchange': 'validateFileSize(this, %d);' % (self.max_upload_size,)})
+                {'onchange': 'validateFileSize(this, %d, %d);' % (self.upload_size['min'], self.upload_size['max'],)})
         return formfield
 
     def deconstruct(self):
         name, path, args, kwargs = super(ConstrainedImageField, self).deconstruct()
-        if self.max_upload_size:
-            kwargs["max_upload_size"] = self.max_upload_size
+        for boundary in ['min', 'max']:
+            if self.upload_size[boundary]:
+                kwargs[boundary + "_upload_size"] = self.upload_size[boundary]
         if self.content_types:
             kwargs["content_types"] = self.content_types
         if self.mime_lookup_length:

@@ -21,9 +21,13 @@ for ext in ['md','rst']:
 # allow setup.py to be run from any path
 os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
 
+IMAGE_REQUIRE = [
+    'Pillow >= 4.0.0'
+]
+
 TESTS_REQUIRE = [
     'python-magic >= 0.4.2',
-]
+] + IMAGE_REQUIRE
 
 setup(
     name='django-constrainedfilefield',
@@ -49,6 +53,7 @@ setup(
     extras_require={
         'filetype': TESTS_REQUIRE,
         'coverage': TESTS_REQUIRE,
+        'image': IMAGE_REQUIRE,
     },
     keywords='django filefield validation file',
     classifiers=[

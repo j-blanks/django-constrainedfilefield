@@ -19,12 +19,15 @@ class ConstrainedFileFieldTest(TestCase):
 
     def test_create_instance_with_file(self):
         instance = TestModel.objects.create(
-            the_file=File(self._get_sample_file('image2k.png'), 'the_file.png')
+            the_file=File(self._get_sample_file('image2k.png'), 'the_file.png'),
+            the_image=File(self._get_sample_file('image2k.png'), 'the_image.png')
         )
 
         self._check_file_url(instance.the_file, 'the_file.png')
+        self._check_file_url(instance.the_image, 'the_image.png')
 
         instance.the_file.delete()
+        instance.the_image.delete()
         instance.delete()
 
     def test_form_ok(self):
