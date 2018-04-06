@@ -1,7 +1,7 @@
 function validateFileSize(input, min, max, message) {
     var size = input.files[0].size;
-    var small = size < min;
-    var large = size > max;
+    var small = (min > 0) && (size < min);
+    var large = (max > 0) && (size > max);
     if (small || large) {
         message = message || "File size ({size}) is too "
         message += small ? "low" : "large";
