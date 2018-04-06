@@ -152,6 +152,7 @@ class ConstrainedImageField(models.ImageField):
             250 MB - 214958080 B
             500 MB - 429916160 B
             1 GiB - 1024 MiB - 2**30 B
+    [min|max]_[heigth|width] : int
     js_checker : bool
         Add a javascript file size checker to the form field
     mime_lookup_length : int
@@ -166,15 +167,16 @@ class ConstrainedImageField(models.ImageField):
     description = _("An image file field with constraints on size and/or type")
 
     def __init__(self, *args, **kwargs):
-        self.upload_size = {}
-        for boundary in ['min', 'max']:
-            self.upload_size[boundary] = kwargs.pop(boundary + "_upload_size", 0)
-            assert isinstance(self.upload_size[boundary], int) and self.upload_size[boundary] >= 0
+        for attribute in ['upload_size', 'height', 'width']:
+            setattr(self, attribute, {})
+            for boundary in ['min', 'max']:
+                value = kwargs.pop(boundary + "_" + attribute, 0)
+                assert isinstance(value, int) and value >= 0
+                getattr(self, attribute)[boundary] = value
         self.content_types = kwargs.pop("content_types", [])
         self.mime_lookup_length = kwargs.pop("mime_lookup_length", 4096)
         assert isinstance(self.mime_lookup_length, int) and self.mime_lookup_length >= 0
         self.js_checker = kwargs.pop("js_checker", False)
-        # TODO: [min|max]_[height|width]
 
         super(ConstrainedImageField, self).__init__(*args, **kwargs)
 
@@ -189,6 +191,8 @@ class ConstrainedImageField(models.ImageField):
                 _('File size ' + 'below' if small else 'exceeds' + ' limit: %(current_size)s. Limit is %(max_size)s.') %
                 {'size': filesizeformat(self.upload_size['min' if small else 'max']),
                  'current_size': filesizeformat(data.size)})
+
+        # TODO: validate height and width
 
         if self.content_types:
             import magic
@@ -241,6 +245,11 @@ class ConstrainedImageField(models.ImageField):
         for boundary in ['min', 'max']:
             if self.upload_size[boundary]:
                 kwargs[boundary + "_upload_size"] = self.upload_size[boundary]
+        for attribute in ['upload_size', 'height', 'width']:
+            for boundary in ['min', 'max']:
+                value = getattr(self, attribute)[boundary]
+                if value:
+                    kwargs[boundary + "_" + attribute] = value
         if self.content_types:
             kwargs["content_types"] = self.content_types
         if self.mime_lookup_length:
