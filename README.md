@@ -1,7 +1,8 @@
 [![Python](https://img.shields.io/badge/Python-2.7,3.4,3.5,3.6-blue.svg?style=flat-square)](/)
 [![Django](https://img.shields.io/badge/Django-1.8,1.9,1.10,1.11,2.0-blue.svg?style=flat-square)](/)
 [![License](https://img.shields.io/badge/License-BSD--3--Clause-blue.svg?style=flat-square)](/LICENSE)
-[![PyPI](https://img.shields.io/pypi/v/django_constrainedfilefield.svg?style=flat-square)](https://pypi.python.org/pypi/django-constrainedfilefield)
+[![PyPIv](https://img.shields.io/pypi/v/django-constrainedfilefield.svg?style=flat-square)](https://pypi.org/project/django-constrainedfilefield)
+[![PyPIs](https://img.shields.io/pypi/status/django-constrainedfilefield.svg)](https://pypi.org/project/django-constrainedfilefield)
 [![Build Status](https://travis-ci.org/mbourqui/django-constrainedfilefield.svg?branch=master)](https://travis-ci.org/mbourqui/django-constrainedfilefield)
 [![Coverage Status](https://coveralls.io/repos/github/mbourqui/django-constrainedfilefield/badge.svg)](https://coveralls.io/github/mbourqui/django-constrainedfilefield)
 
@@ -20,8 +21,8 @@ form field.
 
 
 ## Requirements
-* Python>=2.7
-* Django>=1.8.17
+* [Python][] >= 2.7
+* [Django]>= 1.8.17
 * `python-magic` >= 0.4.2 *iff* you want to check the file type
 
 ## Installation
@@ -33,7 +34,7 @@ form field.
 1. For windows, you must download the dll files and .magic file at https://github.com/pidydx/libmagicwin64 (32-bit version: http://gnuwin32.sourceforge.net/packages/file.htm)), add them to C:\\Windows\\System32 (or to a folder in your PATH), and set MAGIC_FILE_PATH="..." to the path of your .magic file in your settings.py. For more information about the files to download, go to: https://github.com/ahupp/python-magic/blob/43df08c5ed63d7aad839695f311ca1be2eeb1ecb/README.md#dependencies
 
 ### Using the source code
-1. Make sure [`pandoc`](http://pandoc.org/index.html) is installed
+1. Make sure [Pandoc][] is installed
 1. Run `./pypi_packager.sh`
 1. Run `pip install dist/django_constrainedfilefield-x.y.z-[...].wheel`, where `x.y.z` must be replaced by the actual
    version number and `[...]` depends on your packaging configuration
@@ -94,13 +95,14 @@ form field. In order to achieve that, you need to
 
 1. Add `constrainedfilefield` to the `INSTALLED_APPS`. This will load the
   javascripts from the static files.
-* Activate this feature by setting `js_checker=True` when instantiating the
+1.  Activate this feature by setting `js_checker=True` when instantiating the
 `ConstrainedFileField`.
-* Include the javascript in the template where the form field is used
+1. Include the javascript in the template where the form field is used
 
-        {% load static %}
-        <script src="{% static 'constrainedfilefield/js/file_checker.js' %}"></script>
-
+    ```Django
+    {% load static %}
+    <script src="{% static 'constrainedfilefield/js/file_checker.js' %}"></script>
+    ```
 
 ## Note on DOS attacks
 
@@ -123,3 +125,7 @@ connection is abruptly cut before the file finishes uploading. So the recommende
 
 This is a fork of [django-validated-file](https://github.com/kaleidos/django-validated-file) from
 [Kaleidos](https://github.com/kaleidos).
+
+  [python]:     https://www.python.org/             "Python"
+  [django]:     https://www.djangoproject.com/      "Django"
+  [pandoc]:     http://pandoc.org/index.html        "Pandoc"
