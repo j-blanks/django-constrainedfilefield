@@ -19,18 +19,16 @@ for ext in ['md', 'rst']:
 # allow setup.py to be run from any path
 os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
 
+FILETYPE_REQUIRE = [
+    'python-magic-bin; platform_system=="Windows"',
+    'python-magic >= 0.4.2; platform_system!="Windows"',
+]
+
 IMAGE_REQUIRE = [
     'Pillow >= 4.0.0'
 ]
 
-if os.name == 'nt':
-    FILETYPE_REQUIRE = [
-        'python-magic-bin',
-    ]
-else:
-    FILETYPE_REQUIRE = [
-        'python-magic >= 0.4.2',
-    ]
+TESTS_REQUIRE = FILETYPE_REQUIRE + IMAGE_REQUIRE
 
 setup(
     name='django-constrainedfilefield',
@@ -52,10 +50,11 @@ setup(
         'django>=1.8,<2.0; python_version<="3.0"',
         'django>=1.8; python_version>="3.4"',
     ],
-    tests_require=FILETYPE_REQUIRE + IMAGE_REQUIRE,
+    tests_require=TESTS_REQUIRE,
     extras_require={
         'filetype': FILETYPE_REQUIRE,
         'image': IMAGE_REQUIRE,
+        'coverage': TESTS_REQUIRE,  # Used for travis
     },
     keywords='django filefield validation file',
     classifiers=[
