@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 
 import os
-
 from setuptools import find_packages, setup
 
 from constrainedfilefield import __version__
@@ -10,13 +9,12 @@ from constrainedfilefield import __version__
 REPO_URL = "https://github.com/mbourqui/django-constrainedfilefield/"
 
 README = ''
-for ext in ['md','rst']:
+for ext in ['md', 'rst']:
     try:
         with open(os.path.join(os.path.dirname(__file__), 'README.' + ext)) as readme:
             README = readme.read()
     except FileNotFoundError as fnfe:
         pass
-
 
 # allow setup.py to be run from any path
 os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
@@ -25,9 +23,14 @@ IMAGE_REQUIRE = [
     'Pillow >= 4.0.0'
 ]
 
-TESTS_REQUIRE = [
-    'python-magic >= 0.4.2',
-] + IMAGE_REQUIRE
+if os.name == 'nt':
+    FILETYPE_REQUIRE = [
+        'python-magic-bin',
+    ]
+else:
+    FILETYPE_REQUIRE = [
+        'python-magic >= 0.4.2',
+    ]
 
 setup(
     name='django-constrainedfilefield',
@@ -49,10 +52,9 @@ setup(
         'django>=1.8,<2.0; python_version<="3.0"',
         'django>=1.8; python_version>="3.4"',
     ],
-    tests_require=TESTS_REQUIRE,
+    tests_require=FILETYPE_REQUIRE + IMAGE_REQUIRE,
     extras_require={
-        'filetype': TESTS_REQUIRE,
-        'coverage': TESTS_REQUIRE,
+        'filetype': FILETYPE_REQUIRE,
         'image': IMAGE_REQUIRE,
     },
     keywords='django filefield validation file',
