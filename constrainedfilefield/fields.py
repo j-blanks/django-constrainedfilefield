@@ -152,7 +152,7 @@ class ConstrainedImageField(models.ImageField):
             250 MB - 214958080 B
             500 MB - 429916160 B
             1 GiB - 1024 MiB - 2**30 B
-    [min|max]_[heigth|width] : int
+    [min|max]_upload_[heigth|width] : int
     js_checker : bool
         Add a javascript file size checker to the form field
     mime_lookup_length : int
@@ -166,8 +166,14 @@ class ConstrainedImageField(models.ImageField):
 
     description = _("An image file field with constraints on size and/or type")
 
+    _constraint_prefix = 'upload_'
+
+    @property
+    def _constraints(self):
+        return {dimension: self._constraint_prefix + dimension for dimension in ['size', 'height', 'width']}
+
     def __init__(self, *args, **kwargs):
-        for attribute in ['upload_size', 'height', 'width']:
+        for attribute in self._constraints.values():
             setattr(self, attribute, {})
             for boundary in ['min', 'max']:
                 value = kwargs.pop(boundary + "_" + attribute, 0)
@@ -182,17 +188,21 @@ class ConstrainedImageField(models.ImageField):
 
     def clean(self, *args, **kwargs):
         data = super(ConstrainedImageField, self).clean(*args, **kwargs)
+        errors = []
 
-        small = self.upload_size['min'] and data.size < self.upload_size['min']
-        large = self.upload_size['max'] and data.size > self.upload_size['max']
-        if small or large:
-            # Ensure no one bypasses the js checker
-            raise forms.ValidationError(
-                _('File size ' + 'below' if small else 'exceeds' + ' limit: %(current_size)s. Limit is %(max_size)s.') %
-                {'size': filesizeformat(self.upload_size['min' if small else 'max']),
-                 'current_size': filesizeformat(data.size)})
-
-        # TODO: validate height and width
+        for data_attribute, attribute in self._constraints.items():
+            attribute = getattr(self, attribute)
+            below = attribute['min'] and getattr(data, data_attribute) < attribute['min']
+            above = attribute['max'] and getattr(data, data_attribute) > attribute['max']
+            if below or above:
+                # Ensure no one bypasses the js checker
+                errors.append(
+                    _('File %(dimension)s ' + (
+                        'below' if below else 'exceeds') + ' limit: %(current_size)s. Limit is %(limit)s.') %
+                    {'dimension': data_attribute,
+                     'limit': filesizeformat(attribute['min' if below else 'max']) if data_attribute == 'size' else
+                     attribute['min' if below else 'max'],
+                     'current_size': filesizeformat(data.size) if data_attribute == 'size' else data.size})
 
         if self.content_types:
             import magic
@@ -213,10 +223,13 @@ class ConstrainedImageField(models.ImageField):
                 uploaded_content_type = content_type_magic
 
             if uploaded_content_type not in self.content_types:
-                raise forms.ValidationError(
+                errors.append(
                     _('Unsupported file type: %(type)s. Allowed types are %(allowed)s.') %
                     {'type': content_type_magic,
                      'allowed': self.content_types})
+        if errors:
+            raise forms.ValidationError(errors)
+
         return data
 
     def formfield(self, **kwargs):
@@ -237,15 +250,13 @@ class ConstrainedImageField(models.ImageField):
         formfield = super(ConstrainedImageField, self).formfield(**kwargs)
         if self.js_checker:
             formfield.widget.attrs.update(
-                {'onchange': 'validateFileSize(this, %d, %d);' % (self.upload_size['min'], self.upload_size['max'],)})
+                {'onchange': 'validateFileSize(this, %d, %d);' % (
+                    getattr(self, self._constraints['size'])['min'], getattr(self, self._constraints['size'])['max'],)})
         return formfield
 
     def deconstruct(self):
         name, path, args, kwargs = super(ConstrainedImageField, self).deconstruct()
-        for boundary in ['min', 'max']:
-            if self.upload_size[boundary]:
-                kwargs[boundary + "_upload_size"] = self.upload_size[boundary]
-        for attribute in ['upload_size', 'height', 'width']:
+        for attribute in self._constraints.values():
             for boundary in ['min', 'max']:
                 value = getattr(self, attribute)[boundary]
                 if value:
