@@ -1,14 +1,14 @@
 # -*- coding: utf-8 -*-
 import os.path
-
 from django.conf import settings
 from django.core.files import File
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import TestCase
 
-from constrainedfilefield.tests.forms import TestModelForm, TestModelFormJs, TestModelNoValidateForm, TestElementForm, \
+from constrainedfilefield.tests.forms import TestModelForm, TestImageModelForm, TestModelFormJs, \
+    TestModelNoValidateForm, TestElementForm, \
     TestNoModelForm, TestNoModelJsForm
-from constrainedfilefield.tests.models import TestModel, TestContainer
+from constrainedfilefield.tests.models import TestModel, TestImageModel, TestContainer
 
 
 class ConstrainedFileFieldTest(TestCase):
@@ -25,6 +25,22 @@ class ConstrainedFileFieldTest(TestCase):
         self._check_file_url(instance.the_file, 'the_file.png')
 
         instance.the_file.delete()
+        instance.delete()
+
+    def test_create_instance_with_images(self):
+        instance = TestImageModel.objects.create(
+            the_image=File(self._get_sample_file('image2k.png'), 'the_image.png'),
+            the_image_small=File(self._get_sample_file('image2k.png'), 'the_image_small.png'),
+            the_image_large=File(self._get_sample_file('image15k.png'), 'the_image_large.png')
+        )
+
+        self._check_file_url(instance.the_image, 'the_image.png')
+        self._check_file_url(instance.the_image_small, 'the_image_small.png')
+        self._check_file_url(instance.the_image_large, 'the_image_large.png')
+
+        instance.the_image.delete()
+        instance.the_image_small.delete()
+        instance.the_image_large.delete()
         instance.delete()
 
     def test_form_ok(self):
@@ -63,6 +79,49 @@ class ConstrainedFileFieldTest(TestCase):
         self.assertEqual(len(form.errors['the_file']), 1)
         self.assertEqual(form.errors['the_file'][0],
                          u"File size exceeds limit: 14.2 KB. Limit is 10.0 KB.")
+
+    def test_form_valid_image_size(self):
+        files = {'the_image': self._create_simple_uploaded_file(orig_filename='image2k.png',
+                                                                dest_filename='the_image.png',
+                                                                content_type='image/png'),
+                 'the_image_small': self._create_simple_uploaded_file(orig_filename='image2k.png',
+                                                                      dest_filename='the_image_small.png',
+                                                                      content_type='image/png'),
+                 'the_image_large': self._create_simple_uploaded_file(orig_filename='image15k.png',
+                                                                      dest_filename='the_image_large.png',
+                                                                      content_type='image/png')
+                 }
+        form = TestImageModelForm(data={}, files=files)
+        self.assertTrue(form.is_valid())
+
+    def test_form_invalid_image_size(self):
+        files = {'the_image': self._create_simple_uploaded_file(orig_filename='image2k.png',
+                                                                dest_filename='the_image.png',
+                                                                content_type='image/png'),
+                 'the_image_small': self._create_simple_uploaded_file(orig_filename='image15k.png',
+                                                                      dest_filename='the_image_small.png',
+                                                                      content_type='image/png'),
+                 'the_image_large': self._create_simple_uploaded_file(orig_filename='image2k.png',
+                                                                      dest_filename='the_image_large.png',
+                                                                      content_type='image/png')
+                 }
+        form = TestImageModelForm(data={}, files=files)
+        self.assertFalse(form.is_valid())
+        self.assertEqual(len(form.errors), 2)
+        self.assertEqual(len(form.errors['the_image_small']), 3)
+        self.assertEqual(form.errors['the_image_small'][0],
+                         u"File size exceeds limit: 14.2 KB. Limit is 10.0 KB.")
+        self.assertEqual(form.errors['the_image_small'][1],
+                         u"File height exceeds limit: 14586. Limit is 500.")
+        self.assertEqual(form.errors['the_image_small'][2],
+                         u"File width exceeds limit: 14586. Limit is 500.")
+        self.assertEqual(len(form.errors['the_image_large']), 3)
+        self.assertEqual(form.errors['the_image_large'][0],
+                         u"File size below limit: 2.1 KB. Limit is 10.0 KB.")
+        self.assertEqual(form.errors['the_image_large'][1],
+                         u"File height below limit: 2120. Limit is 3000.")
+        self.assertEqual(form.errors['the_image_large'][2],
+                         u"File width below limit: 2120. Limit is 3000.")
 
     def test_form_invalid_filetype(self):
         form = self._create_bound_test_model_form(form_class=TestModelForm,
@@ -149,8 +208,15 @@ class ConstrainedFileFieldTest(TestCase):
         return open(path, mode='rb')
 
     def _check_file_url(self, filefield, filename):
-        url = os.path.join(settings.MEDIA_URL, filefield.field.upload_to, filename)
+        url = settings.MEDIA_URL + filefield.field.upload_to + '/' + filename
         self.assertEqual(filefield.url, url)
+
+    def _create_simple_uploaded_file(self, orig_filename, dest_filename, content_type):
+        return SimpleUploadedFile(
+            name=dest_filename,
+            content=self._get_sample_file(orig_filename).read(),
+            content_type=content_type,
+        )
 
     def _create_bound_test_model_form(self, form_class, orig_filename=None,
                                       dest_filename=None, content_type=None):
