@@ -1,5 +1,9 @@
 # Changelog
 
+## 3.2.0 (03.05.2018)
+* Support ImageField with constraints
+* Update structure to have `fields` as package
+
 ## 3.1.0 (2017.12.24)
 * Windows support for magic, thanks to PR #7 from @epicfaace
 

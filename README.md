@@ -45,6 +45,8 @@ form field.
 The field can be used in forms or model forms like a normal `FileField`. If a user tries to upload
 a file which is too large or without a valid type, a form validation error will occur.
 
+Note that the validation does not occur on the field itself (on `save()`), but when validated through a form.
+
 #### Creating form from model
 Create a model and add a field of type `ConstrainedFileField`. You can add a maximum size in bytes
 and a list of valid mime types that will be allowed. The list of all mime types is available
@@ -103,6 +105,14 @@ form field. In order to achieve that, you need to
     {% load static %}
     <script src="{% static 'constrainedfilefield/js/file_checker.js' %}"></script>
     ```
+
+
+### Validate single image
+Same as above, using `ConstrainedImageFileField` instead.
+
+The `ConstrainedImageField` offers additional constraints:
+* `[min|max]_upload_[width|height]` to define min/max dimensions, respectively width and height.
+
 
 ## Note on DOS attacks
 
