@@ -167,10 +167,11 @@ class ConstrainedImageField(models.ImageField):
     description = _("An image file field with constraints on size and/or type")
 
     _constraint_prefix = 'upload_'
+    _constrained_fields = ['size', 'height', 'width']
 
     @property
     def _constraints(self):
-        return {dimension: self._constraint_prefix + dimension for dimension in ['size', 'height', 'width']}
+        return {field: self._constraint_prefix + field for field in self._constrained_fields}
 
     def __init__(self, *args, **kwargs):
         for attribute in self._constraints.values():
@@ -190,19 +191,19 @@ class ConstrainedImageField(models.ImageField):
         data = super(ConstrainedImageField, self).clean(*args, **kwargs)
         errors = []
 
-        for data_attribute, attribute in self._constraints.items():
-            attribute = getattr(self, attribute)
-            below = attribute['min'] and getattr(data, data_attribute) < attribute['min']
-            above = attribute['max'] and getattr(data, data_attribute) > attribute['max']
+        for field in self._constrained_fields:
+            attribute = getattr(self._constraints, field)
+            below = attribute['min'] and getattr(data, field) < attribute['min']
+            above = attribute['max'] and getattr(data, field) > attribute['max']
             if below or above:
                 # Ensure no one bypasses the js checker
                 errors.append(
                     _('File %(dimension)s ' + (
                         'below' if below else 'exceeds') + ' limit: %(current_size)s. Limit is %(limit)s.') %
-                    {'dimension': data_attribute,
-                     'limit': filesizeformat(attribute['min' if below else 'max']) if data_attribute == 'size' else
+                    {'dimension': field,
+                     'limit': filesizeformat(attribute['min' if below else 'max']) if field == 'size' else
                      attribute['min' if below else 'max'],
-                     'current_size': filesizeformat(data.size) if data_attribute == 'size' else data.size})
+                     'current_size': filesizeformat(data.size) if field == 'size' else data.size})
 
         if self.content_types:
             import magic
