@@ -192,15 +192,15 @@ class ConstrainedImageField(models.ImageField):
         errors = []
 
         for field in self._constrained_fields:
-            attribute = getattr(self._constraints, field)
+            attribute = getattr(self, self._constraints[field])
             below = attribute['min'] and getattr(data, field) < attribute['min']
             above = attribute['max'] and getattr(data, field) > attribute['max']
             if below or above:
                 # Ensure no one bypasses the js checker
                 errors.append(
-                    _('File %(dimension)s ' + (
+                    _('File %(field)s ' + (
                         'below' if below else 'exceeds') + ' limit: %(current_size)s. Limit is %(limit)s.') %
-                    {'dimension': field,
+                    {'field': field,
                      'limit': filesizeformat(attribute['min' if below else 'max']) if field == 'size' else
                      attribute['min' if below else 'max'],
                      'current_size': filesizeformat(data.size) if field == 'size' else data.size})
