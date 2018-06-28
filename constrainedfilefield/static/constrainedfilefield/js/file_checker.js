@@ -1,13 +1,18 @@
 function humanReadableSize(bytes) {
     units = ['Bytes', 'KiB', 'MiB', 'GiB', 'TiB', 'PiB', 'EiB', 'ZiB', 'YiB']
+    var initialbytes = bytes
 
     var i = 0
     while (bytes >= 1024) {
         bytes /= 1024
         i++
     }
-
-    return bytes.toFixed(2) + ' ' + units[i]
+    
+    if (i > units.length) {
+        return initialbytes + ' ' + units[0] 
+    } else {
+        return bytes.toFixed(2) + ' ' + units[i]
+    }
 }
 
 function validateFileSize(input, min, max, message) {
