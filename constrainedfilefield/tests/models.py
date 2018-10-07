@@ -12,6 +12,18 @@ class TestModel(models.Model):
         max_upload_size=10240)
 
 
+class TestDocModel(models.Model):
+    the_file = ConstrainedFileField(
+        null=False,
+        blank=False,
+        upload_to='testfile',
+        content_types=['application/msword',  # .doc
+                       'application/vnd.openxmlformats-officedocument.wordprocessingml.document',  # .docx
+                       'application/vnd.oasis.opendocument.text',  # .odt
+                       ],
+        max_upload_size=10240)
+
+
 class TestImageModel(models.Model):
     the_image = ConstrainedImageField(
         null=True,

@@ -1,11 +1,12 @@
 # -*- coding: utf-8 -*-
 import os.path
+
 from django.conf import settings
 from django.core.files import File
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import TestCase
 
-from constrainedfilefield.tests.forms import TestModelForm, TestImageModelForm, TestModelFormJs, \
+from constrainedfilefield.tests.forms import TestModelForm, TestDocModelForm, TestImageModelForm, TestModelFormJs, \
     TestModelNoValidateForm, TestElementForm, \
     TestNoModelForm, TestNoModelJsForm
 from constrainedfilefield.tests.models import TestModel, TestImageModel, TestContainer
@@ -55,6 +56,41 @@ class ConstrainedFileFieldTest(TestCase):
 
         instance.the_file.delete()
         instance.delete()
+
+    def test_form_doc_ok(self):
+        # ODT
+        form = self._create_bound_test_model_form(form_class=TestDocModelForm,
+                                                  orig_filename='document15k.odt',
+                                                  dest_filename='the_file.odt',
+                                                  content_type='application/vnd.oasis.opendocument.text')
+        self.assertTrue(form.is_valid())
+        instance = form.save()
+        self._check_file_url(instance.the_file, 'the_file.odt')
+        instance.the_file.delete()
+        instance.delete()
+
+        # DOC
+        form = self._create_bound_test_model_form(form_class=TestDocModelForm,
+                                                  orig_filename='document15k.doc',
+                                                  dest_filename='the_file.doc',
+                                                  content_type='application/msword')
+        self.assertTrue(form.is_valid())
+        instance = form.save()
+        self._check_file_url(instance.the_file, 'the_file.doc')
+        instance.the_file.delete()
+        instance.delete()
+
+        # DOCX
+        # Requires a native .docx file
+        # form = self._create_bound_test_model_form(form_class=TestModelDocForm,
+        #                                           orig_filename='document15k.docx',
+        #                                           dest_filename='the_file.docx',
+        #                                           content_type='application/vnd.openxmlformats-officedocument.wordprocessingml.document')
+        # self.assertTrue(form.is_valid())
+        # instance = form.save()
+        # self._check_file_url(instance.the_file, 'the_file.docx')
+        # instance.the_file.delete()
+        # instance.delete()
 
     def test_form_js_ok(self):
         form = self._create_bound_test_model_form(form_class=TestModelFormJs,
@@ -221,9 +257,9 @@ class ConstrainedFileFieldTest(TestCase):
     def _create_bound_test_model_form(self, form_class, orig_filename=None,
                                       dest_filename=None, content_type=None):
         if orig_filename and dest_filename and content_type:
-            uploaded_file = SimpleUploadedFile(
-                name=dest_filename,
-                content=self._get_sample_file(orig_filename).read(),
+            uploaded_file = self._create_simple_uploaded_file(
+                orig_filename,
+                dest_filename,
                 content_type=content_type,
             )
             files = {'the_file': uploaded_file}
@@ -246,9 +282,9 @@ class ConstrainedFileFieldTest(TestCase):
     def _create_bound_test_element_form(self, container, orig_filename=None,
                                         dest_filename=None, content_type=None):
         if orig_filename and dest_filename and content_type:
-            uploaded_file = SimpleUploadedFile(
-                name=dest_filename,
-                content=self._get_sample_file(orig_filename).read(),
+            uploaded_file = self._create_simple_uploaded_file(
+                orig_filename,
+                dest_filename,
                 content_type=content_type,
             )
             files = {'the_file': uploaded_file}
