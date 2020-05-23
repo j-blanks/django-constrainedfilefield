@@ -1,12 +1,14 @@
 # Changelog
 
-## [Unreleased]
+## 4.0.0 (23.05.2020)
 ### Added
 - Support of Django 2.1
 - Support of Django 2.2
 
 ### Removed
 - Support of Django < 1.11
+- Support of Python 2
+- Support of Python 3.4
 
 ## 3.2.0 (03.05.2018)
 * Support ImageField with constraints
