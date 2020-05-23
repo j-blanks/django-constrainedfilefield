@@ -1,0 +1,8 @@
+-r release.pip
+
+black
+safety
+coveralls
+
+Pillow >= 4.0.0
+python-magic >= 0.4.2
