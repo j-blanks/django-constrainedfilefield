@@ -1,11 +1,12 @@
-[![Python](https://img.shields.io/badge/Python-2.7,3.4,3.5,3.6-blue.svg?style=flat-square)](/)
-[![Django](https://img.shields.io/badge/Django-1.8,1.9,1.10,1.11,2.0-blue.svg?style=flat-square)](/)
+[![Python](https://img.shields.io/badge/Python-3.5,3.6,3.7,3.8-blue.svg?style=flat-square)](/)
+[![Django](https://img.shields.io/badge/Django-1.11,2.1,2.2-blue.svg?style=flat-square)](/)
 [![License](https://img.shields.io/badge/License-BSD--3--Clause-blue.svg?style=flat-square)](/LICENSE)
 [![PyPIv](https://img.shields.io/pypi/v/django-constrainedfilefield.svg?style=flat-square)](https://pypi.org/project/django-constrainedfilefield)
 [![PyPIs](https://img.shields.io/pypi/status/django-constrainedfilefield.svg)](https://pypi.org/project/django-constrainedfilefield)
 [![Build Status](https://travis-ci.org/mbourqui/django-constrainedfilefield.svg?branch=master)](https://travis-ci.org/mbourqui/django-constrainedfilefield)
 [![Coverage Status](https://coveralls.io/repos/github/mbourqui/django-constrainedfilefield/badge.svg)](https://coveralls.io/github/mbourqui/django-constrainedfilefield)
-
+[![Downloads](https://pepy.tech/badge/django-constrainedfilefield)](https://pepy.tech/project/django-constrainedfilefield)
+<a href="https://github.com/psf/black"><img alt="Code style: black" src="https://img.shields.io/badge/code%20style-black-000000.svg"></a>
 
 # ConstrainedFileField for Django
 
@@ -21,8 +22,8 @@ form field.
 
 
 ## Requirements
-* [Python][] >= 2.7
-* [Django]>= 1.8.17
+* [Python][] >= 3.5
+* [Django]>= 1.11.29
 * `python-magic` >= 0.4.2 *iff* you want to check the file type
 
 ## Installation

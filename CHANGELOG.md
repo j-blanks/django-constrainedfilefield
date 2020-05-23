@@ -1,5 +1,13 @@
 # Changelog
 
+## [Unreleased]
+### Added
+- Support of Django 2.1
+- Support of Django 2.2
+
+### Removed
+- Support of Django < 1.11
+
 ## 3.2.0 (03.05.2018)
 * Support ImageField with constraints
 * Update structure to have `fields` as package

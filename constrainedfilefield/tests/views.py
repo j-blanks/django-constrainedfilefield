@@ -16,12 +16,12 @@ def nomodel_form(request):
         with a context dictionary
     """
     context = {}
-    if request.method == 'POST':
-        form = forms.TestNoModelForm(request.POST, )
+    if request.method == "POST":
+        form = forms.TestNoModelForm(request.POST,)
         if form.is_valid():
             pass
         else:
             pass
     else:
-        context['form'] = forms.TestNoModelForm()
-    return render(request, 'tests/form.html', context)
+        context["form"] = forms.TestNoModelForm()
+    return render(request, "tests/form.html", context)
