@@ -82,15 +82,15 @@ class ConstrainedFileFieldTest(TestCase):
 
         # DOCX
         # Requires a native .docx file
-        # form = self._create_bound_test_model_form(form_class=TestModelDocForm,
-        #                                           orig_filename='document15k.docx',
-        #                                           dest_filename='the_file.docx',
-        #                                           content_type='application/vnd.openxmlformats-officedocument.wordprocessingml.document')
-        # self.assertTrue(form.is_valid())
-        # instance = form.save()
-        # self._check_file_url(instance.the_file, 'the_file.docx')
-        # instance.the_file.delete()
-        # instance.delete()
+        form = self._create_bound_test_model_form(form_class=TestModelDocForm,
+                                                  orig_filename='document15k.docx',
+                                                  dest_filename='the_file.docx',
+                                                  content_type='application/vnd.openxmlformats-officedocument.wordprocessingml.document')
+        self.assertTrue(form.is_valid())
+        instance = form.save()
+        self._check_file_url(instance.the_file, 'the_file.docx')
+        instance.the_file.delete()
+        instance.delete()
 
     def test_form_js_ok(self):
         form = self._create_bound_test_model_form(form_class=TestModelFormJs,
