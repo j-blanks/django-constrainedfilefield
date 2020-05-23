@@ -31,8 +31,10 @@ before_install:
 install:
   - pip install -q django==$DJANGO_VERSION
   - pip install -e .[coverage]
+  - pip install safety
   - pip install -q coveralls
 script:
+  - safety check
   - coverage run --source=constrainedfilefield constrainedfilefield/tests/__main__.py
 after_success:
   - coveralls
