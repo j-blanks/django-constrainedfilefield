@@ -20,19 +20,19 @@
 #                converts a README.md to README.rst for nice rendering on PyPI.
 #author         :https://github.com/mbourqui
 #licence        :GNU GPL-3.0
-#date           :20170526
-#version        :1.2.1
+#date           :20200523
+#version        :1.2.3
 #usage          :bash pypi_packager.sh
 #requires       :pandoc
 #==============================================================================
 
 PROGRAM_NAME=$(basename "$0")
-VERSION=1.2.1
+VERSION=1.2.3
 PROJECT_NAME=$(basename $(pwd))
 PACKAGE_NAME=${PROJECT_NAME//-/_}  # Replace all - with _
 
 copyright() {
-echo "$PROGRAM_NAME  Copyright (C) 2017-2018  Marc Bourqui"
+echo "$PROGRAM_NAME  Copyright (C) 2017-2020  Marc Bourqui"
 }
 
 usage() {
@@ -111,7 +111,7 @@ pandoc --from=markdown --to=rst --output=README.rst README.md
 python setup.py sdist
 
 # Wheel
-python setup.py bdist_wheel
+python setup.py sdist bdist_wheel
 
 if [ -n "$SUBMIT" ]; then
     # Pre-registration to PyPI is no longer required or supported, upload
@@ -119,6 +119,6 @@ if [ -n "$SUBMIT" ]; then
     twine upload dist/*
 elif [ -n "$TEST" ]; then
     # Upload to TestPyPI
-    twine upload --repository-url https://test.pypi.org/legacy/ dist/*
-    pip install --index-url https://test.pypi.org/legacy/ $PACKAGE_NAME
+    twine upload --repository testpypi dist/*
+    pip install --index-url https://test.pypi.org/simple/ --no-deps $PROJECT_NAME
 fi
