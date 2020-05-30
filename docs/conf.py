@@ -17,12 +17,23 @@
 
 # -- Project information -----------------------------------------------------
 
-project = 'django-constrainedfilefield'
-copyright = '2020, Marc Bourqui'
-author = 'Marc Bourqui'
+try:
+    from importlib.metadata import metadata
+except ImportError:
+    # Python <3.8
+    from importlib_metadata import metadata
 
-# The full version, including alpha/beta/rc tags
-release = '4.0.0'
+PROJECT_NAME = "django-constrainedfilefield"
+project_metadata = metadata(PROJECT_NAME)
+
+project = project_metadata["name"]
+author = project_metadata["author"]
+copyright = f"2020, {author}"
+
+# The full version, including alpha/beta/rc tags, in x.y.z.misc format
+release = project_metadata["version"]
+# The short X.Y version.
+version = ".".join(release.split(".")[:2])
 
 
 # -- General configuration ---------------------------------------------------
