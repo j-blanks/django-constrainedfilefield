@@ -10,7 +10,7 @@ Welcome to django-constrainedfilefield's documentation!
    :maxdepth: 2
    :caption: Contents:
 
-
+   installation
 
 Indices and tables
 ==================
