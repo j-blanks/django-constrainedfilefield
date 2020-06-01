@@ -5,6 +5,7 @@
 [![PyPIs](https://img.shields.io/pypi/status/django-constrainedfilefield.svg)](https://pypi.org/project/django-constrainedfilefield)
 [![Build Status](https://travis-ci.org/mbourqui/django-constrainedfilefield.svg?branch=master)](https://travis-ci.org/mbourqui/django-constrainedfilefield)
 [![Coverage Status](https://coveralls.io/repos/github/mbourqui/django-constrainedfilefield/badge.svg)](https://coveralls.io/github/mbourqui/django-constrainedfilefield)
+[![Documentation Status](https://readthedocs.org/projects/django-constrainedfilefield/badge/?version=latest&style=flat-square)](https://django-constrainedfilefield.readthedocs.io/en/latest/?badge=latest)
 [![Downloads](https://pepy.tech/badge/django-constrainedfilefield)](https://pepy.tech/project/django-constrainedfilefield)
 <a href="https://github.com/psf/black"><img alt="Code style: black" src="https://img.shields.io/badge/code%20style-black-000000.svg"></a>
 
