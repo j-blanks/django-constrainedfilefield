@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import os
+
 from setuptools import find_packages, setup
 
 from constrainedfilefield import __version__
@@ -9,7 +10,7 @@ from constrainedfilefield import __version__
 REPO_URL = "https://github.com/mbourqui/django-constrainedfilefield/"
 
 README = ""
-for ext in ["md", "rst"]:
+for ext in ["rst", "md"]:
     try:
         with open(os.path.join(os.path.dirname(__file__), "README." + ext)) as readme:
             README = readme.read()
