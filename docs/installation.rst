@@ -2,6 +2,18 @@ Installation
 ============
 
 
+Requirements
+------------
+
+-  `Python`_ >= 3.5
+-  `Django`_>= 1.11.29
+-  `python-magic`_ >= 0.4.2 *iff* you want to check the file type
+
+Note for Python 3.4
+^^^^^^^^^^^^^^^^^^^
+Shall work with Python 3.4, but not tested in CI as black requires Python>=3.5.
+
+
 Using PyPI
 ----------
 
@@ -36,6 +48,9 @@ Using the source code
 
 
 
+.. _Python:                     https://www.python.org/
+.. _Django:                     https://www.djangoproject.com/
+.. _python-magic:               https://pypi.org/project/python-magic/
 .. _pidydx/libmagicwin64:       https://github.com/pidydx/libmagicwin64
 .. _gnuwin32.sourceforge.net:   http://gnuwin32.sourceforge.net/packages/file.htm
 .. _python-magic help page:     https://github.com/ahupp/python-magic/blob/43df08c5ed63d7aad839695f311ca1be2eeb1ecb/README.md#dependencies

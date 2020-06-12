@@ -21,13 +21,9 @@ form field.
 * File type limitation
 * Javascript file size checker
 
+## Documentation
 
-## Requirements
-* [Python][] >= 3.5
-* [Django]>= 1.11.29
-* `python-magic` >= 0.4.2 *iff* you want to check the file type
-
-
+Docs are available locally or on [readthedocs.io](https://django-constrainedfilefield.readthedocs.io/).
 
 ## Note on DOS attacks
 
